@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const Priority = require("../models/priority");
+const PriorityController = require("../controllers/priority");
 
-router.get("/", async (req, res) => {
-  res.json("hello from priority");
-});
+router.get("/", PriorityController.getAll);
+router.post("/", PriorityController.post);
 
 module.exports = router;
