@@ -4,6 +4,7 @@ const app = express();
 
 // setup routes and db connections
 require("./startup/db")();
+require("./startup/joiObjectId");
 require("./startup/routes")(app);
 
 // Listen on Port

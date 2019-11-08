@@ -4,6 +4,7 @@ const error = require("../middleware/error");
 const priority = require("../routes/priority");
 const issueType = require("../routes/issueType");
 const status = require("../routes/status");
+const project = require("../routes/project");
 
 module.exports = function(app) {
   app.use(express.json());
@@ -12,6 +13,7 @@ module.exports = function(app) {
   app.use("/priority", priority);
   app.use("/issue-type", issueType);
   app.use("/status", status);
+  app.use("/project", project);
 
   // Error Handling middleware
   app.use(error);
