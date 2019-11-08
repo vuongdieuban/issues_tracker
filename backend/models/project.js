@@ -2,8 +2,7 @@ const Joi = require("joi");
 const mongoose = require("mongoose");
 
 const projectSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  issues: [{ type: mongoose.Schema.Types.ObjectId, ref: "Issue" }]
+  name: { type: String, required: true }
 });
 
 projectSchema.statics.validate = function(data) {
