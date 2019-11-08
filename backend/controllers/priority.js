@@ -6,6 +6,9 @@ class PriorityController {
   };
 
   post = async (req, res) => {
+    const { error } = Priority.validate(req.body);
+    if (error) return res.status(400).json(error.details[0].message);
+
     const priority = new Priority({
       name: req.body.name,
       level: req.body.level
