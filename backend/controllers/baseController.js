@@ -22,6 +22,9 @@ class BaseController {
   };
 
   updateOne = async (req, res) => {
+    const { error } = this.model.validate(req.body);
+    if (error) return res.status(400).json(error.details[0].message);
+
     const data = await this.model.findOneAndUpdate(
       { _id: req.params.id },
       req.body,
