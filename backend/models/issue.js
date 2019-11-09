@@ -1,5 +1,9 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
+const { Project } = require("./project");
+const { IssueType } = require("./issueType");
+const { Priority } = require("./priority");
+const { Status } = require("./status");
 
 const issueSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -24,6 +28,26 @@ issueSchema.statics.validate = function(data) {
   };
   return Joi.validate(data, schema);
 };
+
+// middleware to validate the incoming data before save to ensure everything exists
+issueSchema.pre("save", async function() {
+  const validation = [
+    [Project, "project"],
+    [IssueType, "issueType"],
+    [Priority, "priority"],
+    [Status, "status"]
+  ];
+
+  const data = await Promise.all(
+    validation.map(v => {
+      const Model = v[0];
+      const path = v[1];
+      return Model.findOne({ _id: this[path] });
+    })
+  );
+  if (data.includes(null))
+    throw new Error("One or more of the field id does not exist");
+});
 
 const Issue = mongoose.model("Issue", issueSchema);
 
