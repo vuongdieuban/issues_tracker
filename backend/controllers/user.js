@@ -10,9 +10,8 @@ class UserController {
 
   // get all issues related to this user
   getOne = async (req, res) => {
-    // id should be from req.user that got added in by auth middleware
-    // req.params.id is just temp
-    const data = await Issue.find({ openBy: { _id: req.params.id } })
+    // req.user is added in by auth middleware
+    const data = await Issue.find({ openBy: { _id: req.user._id } })
       .populate({ path: "project", select: "name" })
       .populate({ path: "issueType", select: "name" })
       .populate({ path: "priority", select: "name level" })
