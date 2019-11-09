@@ -7,6 +7,7 @@ const status = require("../routes/status");
 const project = require("../routes/project");
 const issue = require("../routes/issue");
 const user = require("../routes/user");
+const signin = require("../routes/signin");
 
 module.exports = function(app) {
   app.use(express.json());
@@ -18,6 +19,7 @@ module.exports = function(app) {
   app.use("/projects", project);
   app.use("/issues", issue);
   app.use("/users", user);
+  app.use("/signin", signin);
 
   // Error Handling middleware
   app.use(error);

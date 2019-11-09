@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 
 // setup routes and db connections
+require("./startup/config")();
 require("./startup/db")();
 require("./startup/joiObjectId")();
 require("./startup/routes")(app);
