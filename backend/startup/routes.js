@@ -6,6 +6,7 @@ const issueType = require("../routes/issueType");
 const status = require("../routes/status");
 const project = require("../routes/project");
 const issue = require("../routes/issue");
+const user = require("../routes/user");
 
 module.exports = function(app) {
   app.use(express.json());
@@ -13,9 +14,10 @@ module.exports = function(app) {
 
   app.use("/priorities", priority);
   app.use("/issue-types", issueType);
-  app.use("/statuses", status);
+  app.use("/status", status);
   app.use("/projects", project);
   app.use("/issues", issue);
+  app.use("/users", user);
 
   // Error Handling middleware
   app.use(error);

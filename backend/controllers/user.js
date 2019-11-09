@@ -1,15 +1,16 @@
-const { Project } = require("../models/project");
+const { User } = require("../models/user");
 const { Issue } = require("../models/issue");
 const BaseController = require("./baseController");
 
-class ProjectController extends BaseController {
+// User profile should be created during OAuth sign-in process
+class UserController extends BaseController {
   constructor(model) {
     super(model);
   }
 
-  // Get all issues from this particular project id
+  // get all issues related to this user
   getOne = async (req, res) => {
-    const data = await Issue.find({ project: req.params.id })
+    const data = await Issue.find({ user: { googleId: req.body.googleId } })
       .populate({ path: "project", select: "name" })
       .populate({ path: "issueType", select: "name" })
       .populate({ path: "priority", select: "name level" })
@@ -18,4 +19,4 @@ class ProjectController extends BaseController {
   };
 }
 
-module.exports = new ProjectController(Project);
+module.exports = new UserController(User);
