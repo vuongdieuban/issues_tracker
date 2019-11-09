@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const auth = require("../middleware/auth");
 const UserController = require("../controllers/user");
+const validateObjectId = require("../middleware/validateObjectId");
 
 router.get("/", UserController.getAll);
-router.get("/me", auth, UserController.getOne); // get all issues related to one particular user.
+router.get("/:id", validateObjectId, UserController.getOne);
 
 module.exports = router;
