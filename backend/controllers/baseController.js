@@ -12,6 +12,8 @@ class BaseController {
     if (error) return res.status(400).json(error.details[0].message);
 
     try {
+      // if a field is Object Refernce Id then pre-save hook will check to ensure the Id exists before save
+      // Only Issue have reference Id currently. Pre-save hook is defined in Issue model
       const data = await this.model.create(req.body);
       res.status(200).json(data);
     } catch (err) {

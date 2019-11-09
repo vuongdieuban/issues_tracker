@@ -8,12 +8,12 @@ class ProjectController extends BaseController {
   }
 
   getOne = async (req, res) => {
-    const data = await Issue.find({ project: req.params.id })
+    const data = await Issue.findOne({ project: req.params.id })
       .populate({ path: "project", select: "name" })
       .populate({ path: "issueType", select: "name" })
       .populate({ path: "priority", select: "name level" })
       .populate({ path: "status", select: "name" });
-    if (!data.length) return res.status(404).json("No data found with this id");
+    if (!data) return res.status(404).json("No data found with this id");
     res.status(200).json(data);
   };
 }
