@@ -13,6 +13,7 @@ class IssueController extends BaseController {
       .populate({ path: "project", select: "name" })
       .populate({ path: "issueType", select: "name" })
       .populate({ path: "priority", select: "name level" })
+      .populate({ path: "openBy", select: "name email" })
       .populate({ path: "status", select: "name" });
     res.status(200).json(data);
   };
@@ -24,6 +25,7 @@ class IssueController extends BaseController {
       .populate({ path: "project", select: "name" })
       .populate({ path: "issueType", select: "name" })
       .populate({ path: "priority", select: "name level" })
+      .populate({ path: "openBy", select: "name email" })
       .populate({ path: "status", select: "name" });
 
     if (!data.length) return res.status(404).json("No data found with this id");

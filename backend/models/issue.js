@@ -4,6 +4,7 @@ const { Project } = require("./project");
 const { IssueType } = require("./issueType");
 const { Priority } = require("./priority");
 const { Status } = require("./status");
+const { User } = require("./user");
 
 const issueSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -16,7 +17,6 @@ const issueSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now() }
 });
 
-// TODO: Add validation of openBy after create User
 issueSchema.statics.validate = function(data) {
   const schema = {
     title: Joi.string().required(),
@@ -24,6 +24,7 @@ issueSchema.statics.validate = function(data) {
     project: Joi.objectId().required(),
     issueType: Joi.objectId().required(),
     priority: Joi.objectId().required(),
+    openBy: Joi.objectId().required(),
     status: Joi.objectId().required()
   };
   return Joi.validate(data, schema);
@@ -35,6 +36,7 @@ issueSchema.pre("save", async function() {
     [Project, "project"],
     [IssueType, "issueType"],
     [Priority, "priority"],
+    [User, "openBy"],
     [Status, "status"]
   ];
 
