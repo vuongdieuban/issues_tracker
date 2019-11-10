@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   googleId: { type: String, required: true },
   name: { type: String, required: true },
   email: { type: String, required: true },
-  isAdmin: Boolean
+  isAdmin: { type: Boolean, required: true, default: false }
 });
 
 // Add method to userSchema (user object) to create token, 'this' refer to specific user object
@@ -17,6 +17,7 @@ userSchema.methods.generateAuthToken = function() {
       googleId: this.googleId,
       name: this.name,
       email: this.email,
+      isAdmin: this.isAdmin,
       iat: new Date().getTime(), //current time (issue at)
       exp: new Date().setDate(new Date().getDate() + 1) //current time + 1 day ahead (expire date)
     },
