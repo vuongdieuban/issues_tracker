@@ -12,10 +12,10 @@ import AccessTime from "@material-ui/icons/AccessTime";
 import BugReport from "@material-ui/icons/BugReport";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
+import Search from "@material-ui/icons/Search";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Table from "components/Table/Table.js";
 import Tasks from "components/Tasks/Tasks.js";
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
 import Danger from "components/Typography/Danger.js";
@@ -24,6 +24,8 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
+import CustomInput from "components/CustomInput/CustomInput.js";
+import Button from "components/CustomButtons/Button.js";
 
 import { bugs, website, server } from "variables/general.js";
 
@@ -35,6 +37,23 @@ export default function Dashboard() {
   const classes = useStyles();
   return (
     <div>
+      <div className={classes.searchWrapper}>
+        <CustomInput
+          formControlProps={{
+            className: classes.margin + " " + classes.search
+          }}
+          inputProps={{
+            placeholder: "Search",
+            inputProps: {
+              "aria-label": "Search"
+            }
+          }}
+        />
+        <Button color="white" aria-label="edit" justIcon round>
+          <Search />
+        </Button>
+      </div>
+
       <GridContainer>
         <GridItem xs={12} sm={6} md={4}>
           <Card>

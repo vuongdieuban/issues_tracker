@@ -76,6 +76,12 @@ const dashboardStyle = {
       fontWeight: "400",
       lineHeight: "1"
     }
+  },
+  searchWrapper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: "15px"
   }
 };
 
