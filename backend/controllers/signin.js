@@ -28,7 +28,8 @@ class SigninController {
         user = new User({
           googleId,
           name,
-          email
+          email,
+          isAdmin: false
         });
         await user.save();
       }
