@@ -19,6 +19,7 @@ const useStyles = makeStyles(styles);
 
 export default function Header(props) {
   const classes = useStyles();
+
   function makeBrand() {
     var name;
     props.routes.map(prop => {
@@ -29,10 +30,12 @@ export default function Header(props) {
     });
     return name;
   }
+
   const { color } = props;
   const appBarClasses = classNames({
     [" " + classes[color]]: color
   });
+
   return (
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
@@ -43,7 +46,7 @@ export default function Header(props) {
           </Button>
         </div>
         <Hidden smDown implementation="css">
-          <AdminNavbarLinks />
+          <AdminNavbarLinks {...props} />
         </Hidden>
         <Hidden mdUp implementation="css">
           <IconButton

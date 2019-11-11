@@ -15,6 +15,7 @@ import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
 import bgImage from "assets/img/sidebar-2.jpg";
 
+import auth from "../services/authService";
 let ps;
 
 const switchRoutes = (
@@ -46,6 +47,27 @@ export default function Admin({ ...rest }) {
   const image = bgImage;
   const color = "blue";
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [user, setUser] = React.useState(null);
+
+  const handleSigninSuccess = async res => {
+    const currentUser = await auth.signinUser(res.Zi.access_token);
+    setUser(currentUser);
+  };
+
+  const handleSigninFail = async res => {
+    const { error } = res;
+    console.log(error);
+    return alert(
+      "Please allow pop up for this page. Clear Cache History if cannot log in"
+    );
+  };
+
+  const handleSignout = () => {
+    auth.signoutUser();
+    // setUser(null);
+    window.location = "/";
+  };
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -75,6 +97,12 @@ export default function Admin({ ...rest }) {
     };
   }, [mainPanel]);
 
+  // Check for user upon mounting
+  React.useEffect(() => {
+    const currentUser = auth.getCurrentUser();
+    setUser(currentUser);
+  }, []);
+
   return (
     <div className={classes.wrapper}>
       <Sidebar
@@ -83,12 +111,19 @@ export default function Admin({ ...rest }) {
         handleDrawerToggle={handleDrawerToggle}
         open={mobileOpen}
         color={color}
+        user={user}
+        onSigninSuccess={handleSigninSuccess}
+        onSigninFail={handleSigninFail}
+        onSignout={handleSignout}
         {...rest}
       />
       <div className={classes.mainPanel} ref={mainPanel}>
         <Navbar
           routes={routes}
           handleDrawerToggle={handleDrawerToggle}
+          onSigninSuccess={handleSigninSuccess}
+          onSigninFail={handleSigninFail}
+          onSignout={handleSignout}
           {...rest}
         />
         {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
