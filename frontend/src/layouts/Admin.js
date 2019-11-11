@@ -49,7 +49,7 @@ const switchRoutes = (
 
 const useStyles = makeStyles(styles);
 
-export default function Admin({ ...rest }) {
+export default function Admin(props) {
   // styles
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices
@@ -76,7 +76,7 @@ export default function Admin({ ...rest }) {
   const handleSignout = () => {
     auth.signoutUser();
     setUser(null);
-    // window.location = "/";
+    props.history.replace("/admin");
   };
 
   const handleDrawerToggle = () => {
@@ -126,7 +126,7 @@ export default function Admin({ ...rest }) {
         onSigninSuccess={handleSigninSuccess}
         onSigninFail={handleSigninFail}
         onSignout={handleSignout}
-        {...rest}
+        {...props}
       />
       <div className={classes.mainPanel} ref={mainPanel}>
         <Navbar
@@ -136,7 +136,7 @@ export default function Admin({ ...rest }) {
           onSigninSuccess={handleSigninSuccess}
           onSigninFail={handleSigninFail}
           onSignout={handleSignout}
-          {...rest}
+          {...props}
         />
         {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
         <div className={classes.content}>
