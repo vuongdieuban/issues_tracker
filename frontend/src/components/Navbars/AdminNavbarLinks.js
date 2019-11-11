@@ -83,12 +83,14 @@ export default function AdminNavbarLinks(props) {
                 <Paper>
                   <ClickAwayListener onClickAway={handleCloseProfile}>
                     <MenuList role="menu">
-                      <MenuItem
-                        onClick={handleCloseProfile}
-                        className={classes.dropdownItem}
-                      >
-                        Profile
-                      </MenuItem>
+                      <Link to="/admin/user">
+                        <MenuItem
+                          className={classes.dropdownItem}
+                          onClick={handleCloseProfile}
+                        >
+                          Profile
+                        </MenuItem>
+                      </Link>
                       <Divider light />
                       <MenuItem
                         onClick={handleSignout}

@@ -29,6 +29,7 @@ export default function Sidebar(props) {
     <List className={classes.list}>
       {routes
         .filter(prop => prop.protected !== true || user !== null)
+        .filter(prop => prop.showOnSideBar !== false)
         .map((prop, key) => {
           var activePro = " ";
           var listItemClasses;
