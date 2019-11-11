@@ -29,7 +29,8 @@ const headerLinksStyle = theme => ({
     zIndex: "4",
     ...defaultFont,
     fontSize: "14px",
-    margin: "0px"
+    margin: "0px",
+    paddingLeft: 10
   },
   buttonLink: {
     [theme.breakpoints.down("sm")]: {
@@ -56,6 +57,18 @@ const headerLinksStyle = theme => ({
       }
     }
   },
+
+  signInButton: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "auto",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "20px",
+      marginLeft: "0px"
+    }
+  },
+
   searchButton: {
     [theme.breakpoints.down("sm")]: {
       top: "-50px !important",

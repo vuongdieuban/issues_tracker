@@ -100,23 +100,19 @@ export default function AdminNavbarLinks(props) {
         </div>
       ) : (
         <div className={classes.manager}>
-          <span className={classes.linkText}>Sign In</span>
           <GoogleLogin
             render={renderProps => (
               <Button
                 color={window.innerWidth > 959 ? "transparent" : "white"}
-                justIcon={window.innerWidth > 959}
                 simple={!(window.innerWidth > 959)}
                 aria-owns={openProfile ? "profile-menu-list-grow" : null}
                 aria-haspopup="true"
-                className={classes.buttonLink}
+                className={classes.signInButton}
                 onClick={renderProps.onClick}
                 disabled={renderProps.disabled}
               >
                 <Icon className="fa fa-google" />
-                <Hidden mdUp implementation="css">
-                  <p className={classes.linkText}>Sign In</p>
-                </Hidden>
+                <p className={classes.linkText}>Sign In</p>
               </Button>
             )}
             clientId={process.env.REACT_APP_CLIENT_ID}
