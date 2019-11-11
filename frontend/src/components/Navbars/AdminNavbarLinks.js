@@ -119,7 +119,6 @@ export default function AdminNavbarLinks(props) {
                 </Hidden>
               </Button>
             )}
-            buttonText="Log in"
             clientId={process.env.REACT_APP_CLIENT_ID}
             onSuccess={onSigninSuccess}
             onFailure={onSigninFail}

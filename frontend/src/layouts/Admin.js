@@ -120,6 +120,7 @@ export default function Admin({ ...rest }) {
       <div className={classes.mainPanel} ref={mainPanel}>
         <Navbar
           routes={routes}
+          user={user}
           handleDrawerToggle={handleDrawerToggle}
           onSigninSuccess={handleSigninSuccess}
           onSigninFail={handleSigninFail}
