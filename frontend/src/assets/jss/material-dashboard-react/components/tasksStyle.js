@@ -52,6 +52,18 @@ const tasksStyle = {
     backgroundColor: "transparent",
     color: dangerColor[0],
     boxShadow: "none"
+  },
+  priorityUrgent: {
+    color: "#e82517"
+  },
+  priorityHigh: {
+    color: "#f0733a"
+  },
+  priorityMedium: {
+    color: "#d6ad31"
+  },
+  priorityLow: {
+    color: "#84e028"
   }
 };
 export default tasksStyle;

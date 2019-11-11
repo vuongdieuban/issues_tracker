@@ -9,8 +9,6 @@ import Warning from "@material-ui/icons/Warning";
 import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import BugReport from "@material-ui/icons/BugReport";
-import Code from "@material-ui/icons/Code";
-import Cloud from "@material-ui/icons/Cloud";
 import Search from "@material-ui/icons/Search";
 import BuildOutlinedIcon from "@material-ui/icons/BuildOutlined";
 // core components
@@ -26,9 +24,10 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
+import NoteAdd from "@material-ui/icons/NoteAdd";
 
 import projectService from "services/projectService";
-import { bugs, website, server } from "variables/general.js";
+import issueService from "services/issueService";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
@@ -37,10 +36,15 @@ export default function Dashboard() {
   const classes = useStyles();
 
   const [projects, setProjects] = React.useState(null);
+  const [issues, setIssues] = React.useState(null);
+  const [editIssue, setEditIssue] = React.useState(false);
+
   React.useEffect(() => {
     const fetchData = async () => {
       const projects = await projectService.getAll();
+      const issues = await issueService.getAll();
       setProjects(projects);
+      setIssues(issues);
     };
     fetchData();
   }, []);
@@ -152,49 +156,28 @@ export default function Dashboard() {
       {projects ? <GridContainer>{renderProjects()}</GridContainer> : null}
 
       {/* Display all issue sorted by date*/}
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
-          <CustomTabs
-            title="Tasks:"
-            headerColor="primary"
-            tabs={[
-              {
-                tabName: "Bugs",
-                tabIcon: BugReport,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0, 3]}
-                    tasksIndexes={[0, 1, 2, 3]}
-                    tasks={bugs}
-                  />
-                )
-              },
-              {
-                tabName: "Website",
-                tabIcon: Code,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0]}
-                    tasksIndexes={[0, 1]}
-                    tasks={website}
-                  />
-                )
-              },
-              {
-                tabName: "Server",
-                tabIcon: Cloud,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[1]}
-                    tasksIndexes={[0, 1, 2]}
-                    tasks={server}
-                  />
-                )
-              }
-            ]}
-          />
-        </GridItem>
-      </GridContainer>
+      {issues ? (
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
+            <CustomTabs
+              title="Tasks:"
+              headerColor="primary"
+              tabs={[
+                {
+                  tabName: "Bugs",
+                  tabIcon: BugReport,
+                  tabContent: <Tasks tasks={issues} />
+                },
+                {
+                  tabName: "Features",
+                  tabIcon: NoteAdd,
+                  tabContent: <Tasks tasks={issues} />
+                }
+              ]}
+            />
+          </GridItem>
+        </GridContainer>
+      ) : null}
     </div>
   );
 }
