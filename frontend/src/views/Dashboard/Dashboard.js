@@ -8,11 +8,11 @@ import Alarm from "@material-ui/icons/Alarm";
 import Warning from "@material-ui/icons/Warning";
 import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
-import AccessTime from "@material-ui/icons/AccessTime";
 import BugReport from "@material-ui/icons/BugReport";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
 import Search from "@material-ui/icons/Search";
+import BuildOutlinedIcon from "@material-ui/icons/BuildOutlined";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -27,14 +27,48 @@ import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 
+import projectService from "services/projectService";
 import { bugs, website, server } from "variables/general.js";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
-const useStyles = makeStyles(styles);
-
 export default function Dashboard() {
+  const useStyles = makeStyles(styles);
   const classes = useStyles();
+
+  const [projects, setProjects] = React.useState(null);
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const projects = await projectService.getAll();
+      setProjects(projects);
+    };
+    fetchData();
+  }, []);
+
+  const renderProjects = () => {
+    let displayProjects = projects;
+    if (displayProjects.length >= 3) {
+      displayProjects = displayProjects.slice(0, 3);
+    }
+
+    return displayProjects.map(project => (
+      <GridItem xs={12} sm={12} md={4} key={project._id}>
+        <Card chart>
+          <CardBody>
+            <h4 className={classes.cardTitle}>{project.name}</h4>
+            <p className={classes.cardCategory}>{project.summary}</p>
+          </CardBody>
+          <CardFooter chart>
+            <div className={classes.stats}>
+              <BuildOutlinedIcon />
+              {project.languages}
+            </div>
+          </CardFooter>
+        </Card>
+      </GridItem>
+    ));
+  };
+
   return (
     <div>
       <div className={classes.searchWrapper}>
@@ -53,7 +87,7 @@ export default function Dashboard() {
           <Search />
         </Button>
       </div>
-
+      {/* Display number of projects, bugs and features*/}
       <GridContainer>
         <GridItem xs={12} sm={6} md={4}>
           <Card>
@@ -114,23 +148,10 @@ export default function Dashboard() {
         </GridItem>
       </GridContainer>
 
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card chart>
-            <CardHeader color="warning" stats icon></CardHeader>
-            <CardBody>
-              <h4 className={classes.cardTitle}>Bug Tracker Link</h4>
-              <p className={classes.cardCategory}>Project Summary</p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> Project Language
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-      </GridContainer>
+      {/* Display all the projets*/}
+      {projects ? <GridContainer>{renderProjects()}</GridContainer> : null}
 
+      {/* Display all issue sorted by date*/}
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <CustomTabs
