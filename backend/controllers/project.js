@@ -10,7 +10,8 @@ class ProjectController extends BaseController {
   // Get all issues from this particular project id
   getOne = async (req, res) => {
     const data = await Issue.find({ project: req.params.id })
-      .populate({ path: "project", select: "name" })
+      .sort("data")
+      .populate({ path: "project", select: "name summary languages" })
       .populate({ path: "issueType", select: "name" })
       .populate({ path: "priority", select: "name level" })
       .populate({ path: "status", select: "name" });

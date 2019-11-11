@@ -10,7 +10,7 @@ class IssueController extends BaseController {
     const data = await this.model
       .find()
       .sort("date")
-      .populate({ path: "project", select: "name" })
+      .populate({ path: "project", select: "name summary languages" })
       .populate({ path: "issueType", select: "name" })
       .populate({ path: "priority", select: "name level" })
       .populate({ path: "openBy", select: "name email" })
@@ -22,7 +22,7 @@ class IssueController extends BaseController {
     const data = await this.model
       .find({ _id: req.params.id })
       .sort("date")
-      .populate({ path: "project", select: "name" })
+      .populate({ path: "project", select: "name summary languages" })
       .populate({ path: "issueType", select: "name" })
       .populate({ path: "priority", select: "name level" })
       .populate({ path: "openBy", select: "name email" })
