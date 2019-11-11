@@ -15,10 +15,10 @@ import Divider from "@material-ui/core/Divider";
 import Person from "@material-ui/icons/Person";
 // core components
 import Button from "components/CustomButtons/Button.js";
+import { GoogleLogin } from "react-google-login";
+import { Link } from "react-router-dom";
 
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
-
-import { GoogleLogin } from "react-google-login";
 
 const useStyles = makeStyles(styles);
 
@@ -36,6 +36,11 @@ export default function AdminNavbarLinks(props) {
   const handleCloseProfile = () => {
     setOpenProfile(null);
   };
+  const handleSignout = () => {
+    setOpenProfile(null);
+    onSignout();
+  };
+
   return (
     <div>
       {user ? (
@@ -52,7 +57,7 @@ export default function AdminNavbarLinks(props) {
           >
             <Person className={classes.icons} />
             <Hidden mdUp implementation="css">
-              <p className={classes.linkText}>Profile</p>
+              <p className={classes.linkText}>{user.name}</p>
             </Hidden>
           </Button>
           <Poppers
@@ -86,10 +91,10 @@ export default function AdminNavbarLinks(props) {
                       </MenuItem>
                       <Divider light />
                       <MenuItem
-                        onClick={onSignout}
+                        onClick={handleSignout}
                         className={classes.dropdownItem}
                       >
-                        Logout
+                        Sign Out
                       </MenuItem>
                     </MenuList>
                   </ClickAwayListener>

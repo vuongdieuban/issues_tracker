@@ -76,6 +76,7 @@ export default function Admin({ ...rest }) {
   const handleSignout = () => {
     auth.signoutUser();
     setUser(null);
+    // window.location = "/";
   };
 
   const handleDrawerToggle = () => {
