@@ -40,7 +40,8 @@ const dashboardRoutes = [
     rtlName: "",
     icon: Person,
     component: UserProfile,
-    layout: "/admin"
+    layout: "/admin",
+    protected: true
   },
   {
     path: "/table",

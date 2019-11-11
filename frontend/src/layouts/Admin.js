@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import Navbar from "components/Navbars/Navbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
+import ProtectedRoute from "components/ProtectedRoute/ProtectedRoute.js";
 
 import routes from "routes.js";
 
@@ -21,6 +22,16 @@ let ps;
 const switchRoutes = (
   <Switch>
     {routes.map((prop, key) => {
+      if (prop.protected === true) {
+        return (
+          <ProtectedRoute
+            path={prop.layout + prop.path}
+            component={prop.component}
+            key={key}
+          />
+        );
+      }
+
       if (prop.layout === "/admin") {
         return (
           <Route
