@@ -37,7 +37,10 @@ export default function Dashboard() {
 
   const [projects, setProjects] = React.useState(null);
   const [issues, setIssues] = React.useState(null);
-  const [editIssue, setEditIssue] = React.useState(null);
+  const [editIssue, setEditIssue] = React.useState({
+    index: null,
+    issue: null
+  });
   const [openModal, setOpenModal] = React.useState(false);
 
   // Call when component mounted
@@ -75,10 +78,8 @@ export default function Dashboard() {
     ));
   };
 
-  const handleEditClick = (editIssue, index) => {
-    console.log("issue clicked", editIssue);
-    console.log("index: ", index);
-    setEditIssue(editIssue);
+  const handleEditClick = (issue, index) => {
+    setEditIssue({ index, issue });
     handleModalOpen();
   };
 
@@ -88,6 +89,13 @@ export default function Dashboard() {
 
   const handleModalClose = () => {
     setOpenModal(false);
+  };
+
+  const handleEditIssueSave = newIssue => {
+    const cloneIssue = JSON.parse(JSON.stringify(issues));
+    const index = editIssue.index;
+    cloneIssue[index] = newIssue;
+    setIssues(cloneIssue);
   };
 
   return (
@@ -178,6 +186,7 @@ export default function Dashboard() {
         Latest Projects
       </span>
       {projects ? <GridContainer>{renderProjects()}</GridContainer> : null}
+
       {/* Display all issue sorted by date*/}
       {issues ? (
         <GridContainer>
@@ -205,11 +214,13 @@ export default function Dashboard() {
           </GridItem>
         </GridContainer>
       ) : null}
+
       {/* {Display Modal when openModal is true} */}
       <IssueModal
         open={openModal}
         onClose={handleModalClose}
-        issue={editIssue}
+        issue={editIssue.issue}
+        onSave={handleEditIssueSave}
       />
     </div>
   );

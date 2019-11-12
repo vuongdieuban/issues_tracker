@@ -85,7 +85,7 @@ const IssueForm = props => {
     event.preventDefault();
     try {
       const newIssue = await issueService.save(issue);
-      handleCancel();
+      handleSave(newIssue);
     } catch (ex) {
       if (
         ex.response &&
@@ -105,6 +105,12 @@ const IssueForm = props => {
 
   const handleCancel = () => {
     props.onClose();
+  };
+
+  const handleSave = newIssue => {
+    const { onSave, onClose } = props;
+    onSave(newIssue);
+    onClose();
   };
 
   const renderFormSelect = () => {
