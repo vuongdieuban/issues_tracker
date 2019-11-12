@@ -73,17 +73,19 @@ const IssueForm = props => {
     _id: issue._id,
     title: issue.title,
     description: issue.description,
-    project: issue.project,
-    issueType: issue.issueType,
-    priority: issue.priority,
-    openBy: issue.openBy,
-    status: issue.status
+    project: issue.project._id,
+    issueType: issue.issueType._id,
+    priority: issue.priority._id,
+    openBy: issue.openBy._id,
+    status: issue.status._id
   });
 
   const handleSubmit = event => {
     event.preventDefault();
     console.log("issue", issue);
     console.log("submitted");
+    // on save success close modal
+    // props.onCancel();
   };
 
   const handleInputChange = (e, path) => {
