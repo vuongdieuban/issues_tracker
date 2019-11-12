@@ -21,8 +21,7 @@ const useStyles = makeStyles(styles);
 
 export default function Tasks(props) {
   const classes = useStyles();
-  const { tasks } = props;
-  console.log(tasks);
+  const { tasks, onEditClick } = props;
 
   const getTaskStatus = task => {
     if (task.status.name === "Open") {
@@ -54,6 +53,7 @@ export default function Tasks(props) {
                 <IconButton
                   aria-label="Edit"
                   className={classes.tableActionButton}
+                  onClick={() => onEditClick(task)}
                 >
                   <Edit
                     className={

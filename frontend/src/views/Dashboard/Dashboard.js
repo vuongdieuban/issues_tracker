@@ -25,7 +25,7 @@ import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import NoteAdd from "@material-ui/icons/NoteAdd";
-
+import IssueModalForm from "components/IssueModalForm/IssueModalForm.js";
 import projectService from "services/projectService";
 import issueService from "services/issueService";
 
@@ -37,8 +37,10 @@ export default function Dashboard() {
 
   const [projects, setProjects] = React.useState(null);
   const [issues, setIssues] = React.useState(null);
-  const [editIssue, setEditIssue] = React.useState(false);
+  const [editIssue, setEditIssue] = React.useState(null);
+  const [openModal, setOpenModal] = React.useState(false);
 
+  // Call when component mounted
   React.useEffect(() => {
     const fetchData = async () => {
       const projects = await projectService.getAll();
@@ -48,6 +50,12 @@ export default function Dashboard() {
     };
     fetchData();
   }, []);
+
+  // Call when openModal change
+  React.useEffect(() => {
+    if (openModal === true) {
+    }
+  }, [openModal]);
 
   const renderProjects = () => {
     let displayProjects = projects;
@@ -71,6 +79,20 @@ export default function Dashboard() {
         </Card>
       </GridItem>
     ));
+  };
+
+  const handleEditClick = editIssue => {
+    console.log("issue clicked", editIssue);
+    setEditIssue(editIssue);
+    handleModalOpen();
+  };
+
+  const handleModalOpen = () => {
+    setOpenModal(true);
+  };
+
+  const handleModalClose = () => {
+    setOpenModal(false);
   };
 
   return (
@@ -166,18 +188,25 @@ export default function Dashboard() {
                 {
                   tabName: "Bugs",
                   tabIcon: BugReport,
-                  tabContent: <Tasks tasks={issues} />
+                  tabContent: (
+                    <Tasks tasks={issues} onEditClick={handleEditClick} />
+                  )
                 },
                 {
                   tabName: "Features",
                   tabIcon: NoteAdd,
-                  tabContent: <Tasks tasks={issues} />
+                  tabContent: (
+                    <Tasks tasks={issues} onEditClick={handleEditClick} />
+                  )
                 }
               ]}
             />
           </GridItem>
         </GridContainer>
       ) : null}
+
+      {/* {Display Modal when openModal is true} */}
+      <IssueModalForm open={openModal} onClose={handleModalClose} />
     </div>
   );
 }
