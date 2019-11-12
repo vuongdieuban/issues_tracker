@@ -25,7 +25,8 @@ import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import NoteAdd from "@material-ui/icons/NoteAdd";
-import IssueModalForm from "components/IssueModalForm/IssueModalForm.js";
+
+import IssueModal from "components/Modal/IssueModal.js";
 import projectService from "services/projectService";
 import issueService from "services/issueService";
 
@@ -206,7 +207,7 @@ export default function Dashboard() {
       ) : null}
 
       {/* {Display Modal when openModal is true} */}
-      <IssueModalForm open={openModal} onClose={handleModalClose} />
+      <IssueModal open={openModal} onClose={handleModalClose} />
     </div>
   );
 }
