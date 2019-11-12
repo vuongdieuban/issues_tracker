@@ -51,12 +51,6 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
-  // Call when openModal change
-  React.useEffect(() => {
-    if (openModal === true) {
-    }
-  }, [openModal]);
-
   const renderProjects = () => {
     let displayProjects = projects;
     if (displayProjects.length >= 3) {
@@ -203,7 +197,11 @@ export default function Dashboard() {
       ) : null}
 
       {/* {Display Modal when openModal is true} */}
-      <IssueModal open={openModal} onClose={handleModalClose} />
+      <IssueModal
+        open={openModal}
+        onClose={handleModalClose}
+        issue={editIssue}
+      />
     </div>
   );
 }

@@ -5,19 +5,11 @@ const FormSelect = props => {
   const { path, value, label, options, onChange } = props;
 
   const renderOptions = () => {
-    // return (
-    //   options &&
-    //   options.map(option => (
-    //     <option key={option._id} value={option._id}>
-    //       {option.name}
-    //     </option>
-    //   ))
-    // );
     return (
       options &&
       options.map(option => (
-        <option key={option} value={option}>
-          {option}
+        <option key={option._id} value={option._id}>
+          {option.name}
         </option>
       ))
     );
