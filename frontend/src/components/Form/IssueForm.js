@@ -1,27 +1,66 @@
 import React from "react";
 import { Form } from "react-bootstrap";
+import FormInput from "components/FormInput/FormInput.js";
+import FormSelect from "components/FormSelect/FormSelect.js";
 
 const IssueForm = props => {
+  const [projects, setProjects] = React.useState([]);
+  const [issueType, setIssueTypes] = React.useState([]);
+  const [priorities, setPriorities] = React.useState([]);
+  const [status, setStatus] = React.useState([]);
+  const [issue, setIssue] = React.useState({
+    title: "",
+    description: "",
+    project: "",
+    issueType: "",
+    priority: "",
+    openBy: "",
+    status: ""
+  });
+
+  React.useEffect(() => {}, []);
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    console.log("submitted");
+  };
+
+  const handleInputChange = (e, path) => {
+    const value = e.currentTarget.value;
+    console.log(`path:${path}\tvalue:${value}`);
+    let data = { ...issue };
+    data[path] = value;
+    setIssue(data);
+  };
+
   return (
-    <Form>
-      <Form.Group controlId="exampleForm.ControlInput1">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control type="email" placeholder="name@example.com" />
-      </Form.Group>
-      <Form.Group controlId="exampleForm.ControlSelect1">
-        <Form.Label>Example select</Form.Label>
-        <Form.Control as="select">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </Form.Control>
-      </Form.Group>
-      <Form.Group controlId="exampleForm.ControlTextarea1">
-        <Form.Label>Example textarea</Form.Label>
-        <Form.Control as="textarea" rows="3" />
-      </Form.Group>
+    <Form onSubmit={handleSubmit}>
+      <FormInput
+        label="Title"
+        path="title"
+        type="text"
+        as="input"
+        value={issue.title}
+        onChange={handleInputChange}
+        placeholder="Title"
+      />
+      <FormSelect
+        label="Priority"
+        path="priority"
+        onChange={handleInputChange}
+        value={issue.priority}
+        options={[1, 2, 3, 4, 5]}
+      />
+      <FormInput
+        label="Description"
+        path="description"
+        type="text"
+        as="textarea"
+        rows="10"
+        value={issue.description}
+        onChange={handleInputChange}
+        placeholder="Description"
+      />
     </Form>
   );
 };
