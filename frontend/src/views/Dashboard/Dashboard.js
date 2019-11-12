@@ -16,7 +16,6 @@ import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Tasks from "components/Tasks/Tasks.js";
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
-import Danger from "components/Typography/Danger.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
@@ -129,9 +128,6 @@ export default function Dashboard() {
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
-                <Danger>
-                  <Warning />
-                </Danger>
                 <a href="#pablo" onClick={e => e.preventDefault()}>
                   Get more space
                 </a>
