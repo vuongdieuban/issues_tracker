@@ -19,7 +19,7 @@ const IssueModal = props => {
       className={classes.modal}
     >
       <div className={classes.paper}>
-        <IssueForm onCancel={onClose} issue={issue} />
+        <IssueForm onClose={onClose} issue={issue} />
       </div>
     </Modal>
   );

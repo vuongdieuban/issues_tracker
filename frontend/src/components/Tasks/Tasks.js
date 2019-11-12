@@ -53,7 +53,7 @@ export default function Tasks(props) {
                 <IconButton
                   aria-label="Edit"
                   className={classes.tableActionButton}
-                  onClick={() => onEditClick(task)}
+                  onClick={() => onEditClick(task, index)}
                 >
                   <Edit
                     className={

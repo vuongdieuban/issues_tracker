@@ -9,6 +9,7 @@ import issueTypeService from "services/issueTypeService";
 import priorityService from "services/priorityService";
 import statusService from "services/statusService";
 import authService from "services/authService";
+import issueService from "services/issueService";
 
 const IssueForm = props => {
   const [state, setState] = React.useState({
@@ -80,20 +81,49 @@ const IssueForm = props => {
     status: issue.status._id
   });
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
-    console.log("issue", issue);
-    console.log("submitted");
-    // on save success close modal
-    // props.onCancel();
+    try {
+      const newIssue = await issueService.save(issue);
+      handleCancel();
+    } catch (ex) {
+      if (
+        ex.response &&
+        (ex.response.status === 401 || ex.response.status === 403)
+      )
+        alert("Unauthorized!");
+      handleCancel();
+    }
   };
 
   const handleInputChange = (e, path) => {
     const value = e.currentTarget.value;
-    console.log(`path:${path}\tvalue:${value}`);
     let data = { ...issue };
     data[path] = value;
     setIssue(data);
+  };
+
+  const handleCancel = () => {
+    props.onClose();
+  };
+
+  const renderFormSelect = () => {
+    const selectFields = [
+      { label: "Project", issuePath: "project", statePath: "projects" },
+      { label: "Priority", issuePath: "priority", statePath: "priorities" },
+      { label: "Issue Type", issuePath: "issueType", statePath: "issueTypes" },
+      { label: "Status", issuePath: "status", statePath: "status" }
+    ];
+    return selectFields.map((field, index) => (
+      <FormSelect
+        key={index}
+        label={field.label}
+        path={field.issuePath}
+        onChange={handleInputChange}
+        value={issue[field.issuePath]}
+        options={state[field.statePath]}
+      />
+    ));
   };
 
   return (
@@ -107,19 +137,13 @@ const IssueForm = props => {
         onChange={handleInputChange}
         placeholder="Title"
       />
-      <FormSelect
-        label="Priority"
-        path="priority"
-        onChange={handleInputChange}
-        value={issue.priority}
-        options={state.priorities}
-      />
+      {renderFormSelect()}
       <FormInput
         label="Description"
         path="description"
         type="text"
         as="textarea"
-        rows="10"
+        rows="5"
         value={issue.description}
         onChange={handleInputChange}
         placeholder="Description"
@@ -136,7 +160,7 @@ const IssueForm = props => {
         color="danger"
         size="sm"
         variant="outlined"
-        onClick={props.onCancel}
+        onClick={handleCancel}
       >
         Close
       </Button>

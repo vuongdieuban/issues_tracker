@@ -75,8 +75,9 @@ export default function Dashboard() {
     ));
   };
 
-  const handleEditClick = editIssue => {
+  const handleEditClick = (editIssue, index) => {
     console.log("issue clicked", editIssue);
+    console.log("index: ", index);
     setEditIssue(editIssue);
     handleModalOpen();
   };
@@ -166,8 +167,17 @@ export default function Dashboard() {
       </GridContainer>
 
       {/* Display all the projets*/}
+      <span
+        style={{
+          color: "#A9A9A9",
+          textTransform: "uppercase",
+          fontWeight: "bold",
+          fontSize: "14px"
+        }}
+      >
+        Latest Projects
+      </span>
       {projects ? <GridContainer>{renderProjects()}</GridContainer> : null}
-
       {/* Display all issue sorted by date*/}
       {issues ? (
         <GridContainer>
@@ -195,7 +205,6 @@ export default function Dashboard() {
           </GridItem>
         </GridContainer>
       ) : null}
-
       {/* {Display Modal when openModal is true} */}
       <IssueModal
         open={openModal}
