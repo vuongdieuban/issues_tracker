@@ -21,13 +21,15 @@ export default function Header(props) {
   const classes = useStyles();
 
   function makeBrand() {
-    var name;
-    props.routes.map(prop => {
-      if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
-        name = props.rtlActive ? prop.rtlName : prop.name;
+    let name;
+    let { routes } = props;
+    for (let i = 0; i < routes.length; i++) {
+      const route = routes[i];
+      if (window.location.href.indexOf(route.layout + route.path) !== -1) {
+        name = route.name;
+        break;
       }
-      return null;
-    });
+    }
     return name;
   }
 
