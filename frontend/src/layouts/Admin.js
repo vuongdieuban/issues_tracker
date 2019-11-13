@@ -110,6 +110,7 @@ export default function Admin(props) {
           const Component = route.component;
           return (
             <Route
+              exact={route.exact}
               path={route.layout + route.path}
               render={props => <Component {...props} user={user} />}
               key={key}

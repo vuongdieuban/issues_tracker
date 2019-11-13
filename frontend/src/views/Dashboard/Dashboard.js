@@ -8,14 +8,11 @@ import Alarm from "@material-ui/icons/Alarm";
 import Warning from "@material-ui/icons/Warning";
 import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
-import BugReport from "@material-ui/icons/BugReport";
 import Search from "@material-ui/icons/Search";
 import BuildOutlinedIcon from "@material-ui/icons/BuildOutlined";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Tasks from "components/Tasks/Tasks.js";
-import CustomTabs from "components/CustomTabs/CustomTabs.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
@@ -23,11 +20,8 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
-import NoteAdd from "@material-ui/icons/NoteAdd";
 
-import IssueModal from "components/Modal/IssueModal.js";
 import projectService from "services/projectService";
-import issueService from "services/issueService";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
@@ -36,20 +30,12 @@ export default function Dashboard(props) {
   const classes = useStyles();
   const { user } = props;
   const [projects, setProjects] = React.useState(null);
-  const [issues, setIssues] = React.useState(null);
-  const [editIssue, setEditIssue] = React.useState({
-    index: null,
-    issue: null
-  });
-  const [openModal, setOpenModal] = React.useState(false);
 
   // Call when component mounted
   React.useEffect(() => {
     const fetchData = async () => {
       const projects = await projectService.getAll();
-      const issues = await issueService.getAll();
       setProjects(projects);
-      setIssues(issues);
     };
     fetchData();
   }, []);
@@ -76,26 +62,6 @@ export default function Dashboard(props) {
         </Card>
       </GridItem>
     ));
-  };
-
-  const handleEditClick = (issue, index) => {
-    setEditIssue({ index, issue });
-    handleModalOpen();
-  };
-
-  const handleModalOpen = () => {
-    setOpenModal(true);
-  };
-
-  const handleModalClose = () => {
-    setOpenModal(false);
-  };
-
-  const handleEditIssueSave = newIssue => {
-    const cloneIssue = JSON.parse(JSON.stringify(issues));
-    const index = editIssue.index;
-    cloneIssue[index] = newIssue;
-    setIssues(cloneIssue);
   };
 
   return (
@@ -186,50 +152,6 @@ export default function Dashboard(props) {
         Latest Projects
       </span>
       {projects ? <GridContainer>{renderProjects()}</GridContainer> : null}
-
-      {/* Display all issue sorted by date*/}
-      {issues ? (
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <CustomTabs
-              title="Tasks:"
-              headerColor="primary"
-              tabs={[
-                {
-                  tabName: "Bugs",
-                  tabIcon: BugReport,
-                  tabContent: (
-                    <Tasks
-                      tasks={issues}
-                      onEditClick={handleEditClick}
-                      user={user}
-                    />
-                  )
-                },
-                {
-                  tabName: "Features",
-                  tabIcon: NoteAdd,
-                  tabContent: (
-                    <Tasks
-                      tasks={issues}
-                      onEditClick={handleEditClick}
-                      user={user}
-                    />
-                  )
-                }
-              ]}
-            />
-          </GridItem>
-        </GridContainer>
-      ) : null}
-
-      {/* {Display Modal when openModal is true} */}
-      <IssueModal
-        open={openModal}
-        onClose={handleModalClose}
-        issue={editIssue.issue}
-        onSave={handleEditIssueSave}
-      />
     </div>
   );
 }

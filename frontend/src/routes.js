@@ -18,12 +18,11 @@
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
-import BubbleChart from "@material-ui/icons/BubbleChart";
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
-import TableList from "views/TableList/TableList.js";
-import Icons from "views/Icons/Icons.js";
+import ProjectIssues from "views/ProjectIssues/ProjectIssues.js";
+import UserProjects from "views/UserProjects/UserProjects.js";
 
 const dashboardRoutes = [
   {
@@ -32,7 +31,30 @@ const dashboardRoutes = [
     rtlName: "",
     icon: Dashboard,
     component: DashboardPage,
-    layout: "/admin"
+    layout: "/admin",
+    exact: true
+  },
+  {
+    path: "/user/projects/:id/issues",
+    name: "Project Issues",
+    rtlName: "",
+    icon: "",
+    component: ProjectIssues,
+    layout: "/admin",
+    protected: true,
+    showOnSideBar: false,
+    exact: false
+  },
+  {
+    path: "/user/projects",
+    name: "User Projects",
+    rtlName: "",
+    icon: "",
+    component: UserProjects,
+    layout: "/admin",
+    protected: true,
+    showOnSideBar: false,
+    exact: false
   },
   {
     path: "/user",
@@ -42,23 +64,8 @@ const dashboardRoutes = [
     component: UserProfile,
     layout: "/admin",
     protected: true,
-    showOnSideBar: false
-  },
-  {
-    path: "/table",
-    name: "Table List",
-    rtlName: "",
-    icon: "content_paste",
-    component: TableList,
-    layout: "/admin"
-  },
-  {
-    path: "/icons",
-    name: "Icons",
-    rtlName: "",
-    icon: BubbleChart,
-    component: Icons,
-    layout: "/admin"
+    showOnSideBar: true,
+    exact: true
   }
 ];
 
