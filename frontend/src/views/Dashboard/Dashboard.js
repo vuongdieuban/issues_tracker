@@ -31,10 +31,10 @@ import issueService from "services/issueService";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-
+  const { user } = props;
   const [projects, setProjects] = React.useState(null);
   const [issues, setIssues] = React.useState(null);
   const [editIssue, setEditIssue] = React.useState({
@@ -199,14 +199,22 @@ export default function Dashboard() {
                   tabName: "Bugs",
                   tabIcon: BugReport,
                   tabContent: (
-                    <Tasks tasks={issues} onEditClick={handleEditClick} />
+                    <Tasks
+                      tasks={issues}
+                      onEditClick={handleEditClick}
+                      user={user}
+                    />
                   )
                 },
                 {
                   tabName: "Features",
                   tabIcon: NoteAdd,
                   tabContent: (
-                    <Tasks tasks={issues} onEditClick={handleEditClick} />
+                    <Tasks
+                      tasks={issues}
+                      onEditClick={handleEditClick}
+                      user={user}
+                    />
                   )
                 }
               ]}

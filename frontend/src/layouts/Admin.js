@@ -19,34 +19,6 @@ import bgImage from "assets/img/sidebar-2.jpg";
 import auth from "../services/authService";
 let ps;
 
-const switchRoutes = (
-  <Switch>
-    {routes.map((prop, key) => {
-      if (prop.protected === true) {
-        return (
-          <ProtectedRoute
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      }
-
-      if (prop.layout === "/admin") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      }
-      return null;
-    })}
-    <Redirect from="/admin" to="/admin/dashboard" />
-  </Switch>
-);
-
 const useStyles = makeStyles(styles);
 
 export default function Admin(props) {
@@ -121,6 +93,35 @@ export default function Admin(props) {
     setUser(currentUser);
   }, []);
 
+  const switchRoutes = (
+    <Switch>
+      {routes.map((route, key) => {
+        if (route.protected === true) {
+          return (
+            <ProtectedRoute
+              path={route.layout + route.path}
+              component={route.component}
+              key={key}
+            />
+          );
+        }
+
+        if (route.layout === "/admin") {
+          const Component = route.component;
+          return (
+            <Route
+              path={route.layout + route.path}
+              render={props => <Component {...props} user={user} />}
+              key={key}
+            />
+          );
+        }
+        return null;
+      })}
+      <Redirect from="/admin" to="/admin/dashboard" />
+    </Switch>
+  );
+
   return (
     <div className={classes.wrapper}>
       <Sidebar
@@ -145,7 +146,6 @@ export default function Admin(props) {
           onSignout={handleSignout}
           {...props}
         />
-        {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
         <div className={classes.content}>
           <div className={classes.container}>{switchRoutes}</div>
         </div>
