@@ -1,8 +1,14 @@
 import React from "react";
 import BugReport from "@material-ui/icons/BugReport";
 import NoteAdd from "@material-ui/icons/NoteAdd";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
 import { toast } from "react-toastify";
 
+import Button from "components/CustomButtons/Button";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Tasks from "components/Tasks/Tasks.js";
@@ -14,6 +20,7 @@ import authService from "services/authService";
 
 const ProjectIssues = props => {
   const [openModal, setOpenModal] = React.useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
   const [user, setUser] = React.useState(null);
   const [issues, setIssues] = React.useState(null);
   const [currentIssue, setCurrentIssue] = React.useState({
@@ -28,9 +35,8 @@ const ProjectIssues = props => {
   };
 
   const handleRemoveClick = (issue, index) => {
-    let cloneIssues = JSON.parse(JSON.stringify(issues));
-    cloneIssues.splice(index, 1);
-    setIssues(cloneIssues);
+    setCurrentIssue({ index, issue });
+    setOpenDialog(true);
   };
 
   const handleModalOpen = () => {
@@ -41,11 +47,33 @@ const ProjectIssues = props => {
     setOpenModal(false);
   };
 
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+  };
+
   const handleCurrentIssueSave = newIssue => {
     const cloneIssue = JSON.parse(JSON.stringify(issues));
     const index = currentIssue.index;
     cloneIssue[index] = newIssue;
     setIssues(cloneIssue);
+  };
+
+  const handleCurrentIssueRemove = async () => {
+    try {
+      await issueService.remove(currentIssue.issue._id);
+      const index = currentIssue.index;
+      let cloneIssues = JSON.parse(JSON.stringify(issues));
+      cloneIssues.splice(index, 1);
+      setIssues(cloneIssues);
+      setOpenDialog(false);
+    } catch (ex) {
+      if (
+        ex.response &&
+        (ex.response.status === 401 || ex.response.status === 403)
+      )
+        toast.error("Unauthorized!");
+      setOpenDialog(false);
+    }
   };
 
   // Call when component mounted.
@@ -126,6 +154,30 @@ const ProjectIssues = props => {
         issue={currentIssue.issue}
         readOnly={currentIssue.readOnly}
       />
+
+      {/* {Display remove confimation dialog} */}
+      <Dialog
+        onClose={handleDialogClose}
+        aria-labelledby="alert-dialog-title"
+        open={openDialog}
+      >
+        <DialogTitle id="alert-dialog-title">
+          Remove Issue Confirmation
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            You are about to permanent delete an issue. Are you sure to proceed?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button color="danger" size="sm" onClick={handleCurrentIssueRemove}>
+            Confirm
+          </Button>
+          <Button color="success" size="sm" onClick={handleDialogClose}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </React.Fragment>
   );
 };

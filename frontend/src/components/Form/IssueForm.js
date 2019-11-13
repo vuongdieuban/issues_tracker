@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Form } from "react-bootstrap";
+import { toast } from "react-toastify";
 import Button from "components/CustomButtons/Button.js";
 import FormInput from "components/FormInput/FormInput.js";
 import FormSelect from "components/FormSelect/FormSelect.js";
@@ -93,7 +94,7 @@ const IssueForm = props => {
         ex.response &&
         (ex.response.status === 401 || ex.response.status === 403)
       )
-        alert("Unauthorized!");
+        toast.error("Unauthorized!");
       handleCancel();
     }
   };
