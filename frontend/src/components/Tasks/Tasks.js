@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -14,6 +13,8 @@ import Edit from "@material-ui/icons/Edit";
 import Close from "@material-ui/icons/Close";
 import CheckCircleOutlined from "@material-ui/icons/CheckCircleOutlined";
 import ReportProblemOutlined from "@material-ui/icons/ReportProblemOutlined";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+
 // core components
 import styles from "assets/jss/material-dashboard-react/components/tasksStyle.js";
 
@@ -21,7 +22,8 @@ const useStyles = makeStyles(styles);
 
 export default function Tasks(props) {
   const classes = useStyles();
-  const { tasks, onEditClick } = props;
+  const { tasks, onEditClick, user } = props;
+  console.log("user in task", user);
 
   const getTaskStatus = task => {
     if (task.status.name === "Open") {
@@ -29,6 +31,55 @@ export default function Tasks(props) {
       return <ReportProblemOutlined className={statusClassName} />;
     }
     return <CheckCircleOutlined />;
+  };
+
+  const renderAction = (task, index) => {
+    let tooltips = [];
+    const authorize = [
+      {
+        id: "edit",
+        title: "Edit",
+        className: classes.tableActionButtonIcon + " " + classes.edit,
+        Icon: Edit
+      },
+      {
+        id: "remove",
+        title: "Remove",
+        className: classes.tableActionButtonIcon + " " + classes.close,
+        Icon: Close
+      }
+    ];
+    const nonAuthorize = [
+      {
+        id: "view",
+        title: "View",
+        className: classes.tableActionButtonIcon + " " + classes.edit,
+        Icon: VisibilityIcon
+      }
+    ];
+
+    if (user && (user._id === task.openBy._id || user.isAdmin)) {
+      tooltips = authorize;
+    } else {
+      tooltips = nonAuthorize;
+    }
+
+    return tooltips.map(tooltip => (
+      <Tooltip
+        key={tooltip.id}
+        id={tooltip.id}
+        title={tooltip.title}
+        placement="top"
+        classes={{ tooltip: classes.tooltip }}
+      >
+        <IconButton
+          className={classes.tableActionButton}
+          onClick={() => onEditClick(task, index)}
+        >
+          <tooltip.Icon className={tooltip.className} />
+        </IconButton>
+      </Tooltip>
+    ));
   };
 
   return (
@@ -44,41 +95,7 @@ export default function Tasks(props) {
               by: {task.openBy.name}
             </TableCell>
             <TableCell className={classes.tableActions}>
-              <Tooltip
-                id="tooltip-top"
-                title="Edit Task"
-                placement="top"
-                classes={{ tooltip: classes.tooltip }}
-              >
-                <IconButton
-                  aria-label="Edit"
-                  className={classes.tableActionButton}
-                  onClick={() => onEditClick(task, index)}
-                >
-                  <Edit
-                    className={
-                      classes.tableActionButtonIcon + " " + classes.edit
-                    }
-                  />
-                </IconButton>
-              </Tooltip>
-              <Tooltip
-                id="tooltip-top-start"
-                title="Remove"
-                placement="top"
-                classes={{ tooltip: classes.tooltip }}
-              >
-                <IconButton
-                  aria-label="Close"
-                  className={classes.tableActionButton}
-                >
-                  <Close
-                    className={
-                      classes.tableActionButtonIcon + " " + classes.close
-                    }
-                  />
-                </IconButton>
-              </Tooltip>
+              {renderAction(task, index)}
             </TableCell>
           </TableRow>
         ))}
