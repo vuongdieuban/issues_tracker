@@ -17,6 +17,7 @@ const IssueForm = props => {
     issueTypes: [],
     priorities: [],
     status: [],
+    readOnly: true,
     isDone: false
   });
   const [issue, setIssue] = React.useState({
@@ -29,7 +30,7 @@ const IssueForm = props => {
     status: ""
   });
 
-  // fetch data on mount
+  // fetch data and setState on mount
   React.useEffect(() => {
     const fetchData = async () => {
       const projects = await projectService.getAll();
@@ -42,7 +43,8 @@ const IssueForm = props => {
         issueTypes,
         priorities,
         status,
-        isDone: true
+        isDone: true,
+        readOnly: props.readOnly
       });
     };
     fetchData();
@@ -128,6 +130,7 @@ const IssueForm = props => {
         onChange={handleInputChange}
         value={issue[field.issuePath]}
         options={state[field.statePath]}
+        disabled={state.readOnly}
       />
     ));
   };
@@ -142,6 +145,7 @@ const IssueForm = props => {
         value={issue.title}
         onChange={handleInputChange}
         placeholder="Title"
+        readOnly={state.readOnly}
       />
       {renderFormSelect()}
       <FormInput
@@ -153,23 +157,37 @@ const IssueForm = props => {
         value={issue.description}
         onChange={handleInputChange}
         placeholder="Description"
+        readOnly={state.readOnly}
       />
-      <Button
-        color="primary"
-        size="sm"
-        variant="outlined"
-        onClick={handleSubmit}
-      >
-        Save
-      </Button>
-      <Button
-        color="danger"
-        size="sm"
-        variant="outlined"
-        onClick={handleCancel}
-      >
-        Close
-      </Button>
+      {state.readOnly ? (
+        <Button
+          color="danger"
+          size="sm"
+          variant="outlined"
+          onClick={handleCancel}
+        >
+          Close
+        </Button>
+      ) : (
+        <React.Fragment>
+          <Button
+            color="primary"
+            size="sm"
+            variant="outlined"
+            onClick={handleSubmit}
+          >
+            Save
+          </Button>
+          <Button
+            color="danger"
+            size="sm"
+            variant="outlined"
+            onClick={handleCancel}
+          >
+            Close
+          </Button>
+        </React.Fragment>
+      )}
     </Form>
   );
 };

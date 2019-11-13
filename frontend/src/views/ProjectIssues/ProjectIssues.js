@@ -16,14 +16,21 @@ const ProjectIssues = props => {
   const [openModal, setOpenModal] = React.useState(false);
   const [user, setUser] = React.useState(null);
   const [issues, setIssues] = React.useState(null);
-  const [editIssue, setEditIssue] = React.useState({
+  const [currentIssue, setCurrentIssue] = React.useState({
     index: null,
-    issue: null
+    issue: null,
+    readOnly: true
   });
 
-  const handleEditClick = (issue, index) => {
-    setEditIssue({ index, issue });
+  const handleViewEditClick = (issue, index, readOnly) => {
+    setCurrentIssue({ index, issue, readOnly });
     handleModalOpen();
+  };
+
+  const handleRemoveClick = (issue, index) => {
+    let cloneIssues = JSON.parse(JSON.stringify(issues));
+    cloneIssues.splice(index, 1);
+    setIssues(cloneIssues);
   };
 
   const handleModalOpen = () => {
@@ -34,9 +41,9 @@ const ProjectIssues = props => {
     setOpenModal(false);
   };
 
-  const handleEditIssueSave = newIssue => {
+  const handleCurrentIssueSave = newIssue => {
     const cloneIssue = JSON.parse(JSON.stringify(issues));
-    const index = editIssue.index;
+    const index = currentIssue.index;
     cloneIssue[index] = newIssue;
     setIssues(cloneIssue);
   };
@@ -87,8 +94,9 @@ const ProjectIssues = props => {
                   tabContent: (
                     <Tasks
                       tasks={issues}
-                      onEditClick={handleEditClick}
                       user={user}
+                      onViewEditClick={handleViewEditClick}
+                      onRemoveClick={handleRemoveClick}
                     />
                   )
                 },
@@ -98,8 +106,9 @@ const ProjectIssues = props => {
                   tabContent: (
                     <Tasks
                       tasks={issues}
-                      onEditClick={handleEditClick}
                       user={user}
+                      onViewEditClick={handleViewEditClick}
+                      onRemoveClick={handleRemoveClick}
                     />
                   )
                 }
@@ -113,8 +122,9 @@ const ProjectIssues = props => {
       <IssueModal
         open={openModal}
         onClose={handleModalClose}
-        issue={editIssue.issue}
-        onSave={handleEditIssueSave}
+        onSave={handleCurrentIssueSave}
+        issue={currentIssue.issue}
+        readOnly={currentIssue.readOnly}
       />
     </React.Fragment>
   );

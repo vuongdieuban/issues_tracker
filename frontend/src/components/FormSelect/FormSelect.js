@@ -2,7 +2,7 @@ import React from "react";
 import { Form } from "react-bootstrap";
 
 const FormSelect = props => {
-  const { path, value, label, options, onChange } = props;
+  const { path, value, label, options, onChange, disabled } = props;
 
   const renderOptions = () => {
     return (
@@ -18,7 +18,12 @@ const FormSelect = props => {
   return (
     <Form.Group controlId={label}>
       <Form.Label>{label}</Form.Label>
-      <Form.Control as="select" onChange={e => onChange(e, path)} value={value}>
+      <Form.Control
+        as="select"
+        onChange={e => onChange(e, path)}
+        value={value}
+        disabled={disabled}
+      >
         {renderOptions()}
       </Form.Control>
     </Form.Group>

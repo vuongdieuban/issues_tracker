@@ -22,7 +22,7 @@ const useStyles = makeStyles(styles);
 
 export default function Tasks(props) {
   const classes = useStyles();
-  const { tasks, onEditClick, user } = props;
+  const { tasks, onViewEditClick, onRemoveClick, user } = props;
   const getTaskStatus = task => {
     if (task.status.name === "Open") {
       const statusClassName = classes["priority" + task.priority.name];
@@ -38,13 +38,15 @@ export default function Tasks(props) {
         id: "edit",
         title: "Edit",
         className: classes.tableActionButtonIcon + " " + classes.edit,
-        Icon: Edit
+        Icon: Edit,
+        onClick: () => onViewEditClick(task, index, false)
       },
       {
         id: "remove",
         title: "Remove",
         className: classes.tableActionButtonIcon + " " + classes.close,
-        Icon: Close
+        Icon: Close,
+        onClick: () => onRemoveClick(task, index)
       }
     ];
     const nonAuthorize = [
@@ -52,7 +54,8 @@ export default function Tasks(props) {
         id: "view",
         title: "View",
         className: classes.tableActionButtonIcon + " " + classes.edit,
-        Icon: VisibilityIcon
+        Icon: VisibilityIcon,
+        onClick: () => onViewEditClick(task, index, true)
       }
     ];
 
@@ -72,7 +75,7 @@ export default function Tasks(props) {
       >
         <IconButton
           className={classes.tableActionButton}
-          onClick={() => onEditClick(task, index)}
+          onClick={tooltip.onClick}
         >
           <tooltip.Icon className={tooltip.className} />
         </IconButton>

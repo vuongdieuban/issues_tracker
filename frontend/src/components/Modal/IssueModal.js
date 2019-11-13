@@ -9,7 +9,7 @@ const useStyles = makeStyles(styles);
 
 const IssueModal = props => {
   const classes = useStyles();
-  const { open, onClose, issue, onSave } = props;
+  const { open, onClose, issue, onSave, readOnly } = props;
   return (
     <Modal
       aria-labelledby="simple-modal-title"
@@ -19,7 +19,12 @@ const IssueModal = props => {
       className={classes.modal}
     >
       <div className={classes.paper}>
-        <IssueForm onClose={onClose} issue={issue} onSave={onSave} />
+        <IssueForm
+          onClose={onClose}
+          onSave={onSave}
+          issue={issue}
+          readOnly={readOnly}
+        />
       </div>
     </Modal>
   );

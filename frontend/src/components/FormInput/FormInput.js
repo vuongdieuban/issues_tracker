@@ -2,7 +2,17 @@ import React from "react";
 import { Form } from "react-bootstrap";
 
 const FormInput = props => {
-  const { label, path, value, onChange, type, as, placeholder, rows } = props;
+  const {
+    label,
+    path,
+    value,
+    onChange,
+    type,
+    as,
+    placeholder,
+    rows,
+    readOnly
+  } = props;
 
   return (
     <Form.Group controlId={label}>
@@ -15,6 +25,7 @@ const FormInput = props => {
         className="form-control"
         as={as}
         rows={rows}
+        readOnly={readOnly}
       />
     </Form.Group>
   );
