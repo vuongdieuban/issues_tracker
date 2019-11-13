@@ -13,7 +13,7 @@ class IssueController extends BaseController {
       .populate({ path: "project", select: "name summary languages" })
       .populate({ path: "issueType", select: "name" })
       .populate({ path: "priority", select: "name level" })
-      .populate({ path: "openBy", select: "name email" })
+      .populate({ path: "openBy", select: "name email isAdmin" })
       .populate({ path: "status", select: "name" });
     res.status(200).json(data);
   };
@@ -30,7 +30,7 @@ class IssueController extends BaseController {
         { path: "project", select: "name summary languages" },
         { path: "issueType", select: "name" },
         { path: "priority", select: "name level" },
-        { path: "openBy", select: "name email" },
+        { path: "openBy", select: "name email isAdmin" },
         { path: "status", select: "name" }
       ]);
       res.status(200).json(data);
@@ -46,7 +46,7 @@ class IssueController extends BaseController {
       .populate({ path: "project", select: "name summary languages" })
       .populate({ path: "issueType", select: "name" })
       .populate({ path: "priority", select: "name level" })
-      .populate({ path: "openBy", select: "name email" })
+      .populate({ path: "openBy", select: "name email isAdmin" })
       .populate({ path: "status", select: "name" });
 
     if (!data.length) return res.status(404).json("No data found with this id");
@@ -70,7 +70,7 @@ class IssueController extends BaseController {
         { path: "project", select: "name summary languages" },
         { path: "issueType", select: "name" },
         { path: "priority", select: "name level" },
-        { path: "openBy", select: "name email" },
+        { path: "openBy", select: "name email isAdmin" },
         { path: "status", select: "name" }
       ]);
       res.status(200).json(data);

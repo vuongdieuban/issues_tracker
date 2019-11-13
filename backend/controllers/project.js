@@ -14,7 +14,8 @@ class ProjectController extends BaseController {
       .populate({ path: "project", select: "name summary languages" })
       .populate({ path: "issueType", select: "name" })
       .populate({ path: "priority", select: "name level" })
-      .populate({ path: "status", select: "name" });
+      .populate({ path: "status", select: "name" })
+      .populate({ path: "openBy", select: "name email isAdmin" });
     res.status(200).json(data);
   };
 }
