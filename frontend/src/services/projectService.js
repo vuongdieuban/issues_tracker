@@ -8,7 +8,7 @@ const getAll = async () => {
 };
 
 const getOne = async id => {
-  const { data } = await http.get(PROJECT_URL, { id });
+  const { data } = await http.get(PROJECT_URL + "/" + id);
   return data;
 };
 

@@ -1,18 +1,18 @@
 import React from "react";
 import BugReport from "@material-ui/icons/BugReport";
 import NoteAdd from "@material-ui/icons/NoteAdd";
+import { toast } from "react-toastify";
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Tasks from "components/Tasks/Tasks.js";
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
 import IssueModal from "components/Modal/IssueModal.js";
-
 import issueService from "services/issueService";
+import projectService from "services/projectService";
 import authService from "services/authService";
 
 const ProjectIssues = props => {
-  console.log("project id", props.match.params.id);
   const [openModal, setOpenModal] = React.useState(false);
   const [user, setUser] = React.useState(null);
   const [issues, setIssues] = React.useState(null);
@@ -47,8 +47,19 @@ const ProjectIssues = props => {
     setUser(currentUser);
 
     const fetchData = async () => {
-      const issues = await issueService.getAll();
-      setIssues(issues);
+      try {
+        // get all issues from current project id
+        const issues = await projectService.getOne(props.match.params.id);
+        setIssues(issues);
+      } catch (ex) {
+        if (
+          ex.response &&
+          (ex.response.status === 404 || ex.response.status === 400)
+        ) {
+          toast.error("Invalid Project Id");
+          return props.history.replace("/");
+        }
+      }
     };
     fetchData();
   }, []);

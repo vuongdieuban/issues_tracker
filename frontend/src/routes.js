@@ -35,13 +35,13 @@ const dashboardRoutes = [
     exact: true
   },
   {
-    path: "/user/projects/:id/issues",
+    path: "/projects/:id",
     name: "Project Issues",
     rtlName: "",
     icon: "",
     component: ProjectIssues,
     layout: "/admin",
-    protected: true,
+    protected: false,
     showOnSideBar: false,
     exact: false
   },
