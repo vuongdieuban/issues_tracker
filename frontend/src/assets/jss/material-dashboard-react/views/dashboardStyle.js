@@ -61,7 +61,8 @@ const dashboardStyle = {
       color: grayColor[1],
       fontWeight: "400",
       lineHeight: "1"
-    }
+    },
+    cursor: "pointer"
   },
   cardTitleWhite: {
     color: whiteColor,

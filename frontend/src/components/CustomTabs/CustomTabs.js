@@ -8,10 +8,6 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 // core components
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -22,28 +18,6 @@ import styles from "assets/jss/material-dashboard-react/components/customTabsSty
 const useStyles = makeStyles(styles);
 
 export default function CustomTabs(props) {
-  const renderDropDown = () => {
-    const age = [1, 2, 3, 4];
-    return (
-      <FormControl variant="filled" className={classes.formControl}>
-        <InputLabel id="demo-simple-select-filled-label">Age</InputLabel>
-        <Select
-          labelId="demo-simple-select-filled-label"
-          id="demo-simple-select-filled"
-          value={age}
-          onChange={handleChange}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
-    );
-  };
-
   const [value, setValue] = React.useState(0);
   const handleChange = (event, value) => {
     setValue(value);

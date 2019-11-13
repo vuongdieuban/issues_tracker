@@ -23,7 +23,6 @@ const useStyles = makeStyles(styles);
 export default function Tasks(props) {
   const classes = useStyles();
   const { tasks, onEditClick, user } = props;
-
   const getTaskStatus = task => {
     if (task.status.name === "Open") {
       const statusClassName = classes["priority" + task.priority.name];

@@ -41,7 +41,8 @@ const ProjectIssues = props => {
     setIssues(cloneIssue);
   };
 
-  // Call when component mounted
+  // Call when component mounted.
+  // Check for current user in local storage in case props.user is not passed down due to user directly enter this page
   React.useEffect(() => {
     const currentUser = authService.getCurrentUser();
     setUser(currentUser);
@@ -63,6 +64,12 @@ const ProjectIssues = props => {
     };
     fetchData();
   }, []);
+
+  // If user sign in on this page, the props.user will change due to top level (Admin) re-render and pass down.
+  // Set currentUser to just signed in user
+  React.useEffect(() => {
+    setUser(props.user);
+  }, [props.user]);
 
   return (
     <React.Fragment>

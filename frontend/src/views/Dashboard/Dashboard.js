@@ -1,11 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 // react plugin for creating charts
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
 import Store from "@material-ui/icons/Store";
 import Alarm from "@material-ui/icons/Alarm";
-import Warning from "@material-ui/icons/Warning";
 import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Search from "@material-ui/icons/Search";
@@ -20,7 +20,6 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
-
 import projectService from "services/projectService";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
@@ -28,7 +27,6 @@ import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js"
 export default function Dashboard(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const { user } = props;
   const [projects, setProjects] = React.useState(null);
 
   // Call when component mounted
@@ -45,15 +43,16 @@ export default function Dashboard(props) {
     if (displayProjects.length >= 3) {
       displayProjects = displayProjects.slice(0, 3);
     }
-
     return displayProjects.map(project => (
       <GridItem xs={12} sm={12} md={4} key={project._id}>
         <Card chart>
           <CardBody>
-            <h4 className={classes.cardTitle}>{project.name}</h4>
+            <Link to={`/admin/projects/${project._id}`}>
+              <h4 className={classes.cardTitle}>{project.name}</h4>
+            </Link>
             <p className={classes.cardCategory}>{project.summary}</p>
           </CardBody>
-          <CardFooter chart>
+          <CardFooter>
             <div className={classes.stats}>
               <BuildOutlinedIcon />
               {project.languages}
