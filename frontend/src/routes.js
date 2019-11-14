@@ -23,7 +23,7 @@ import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
 import ProjectIssues from "views/ProjectIssues/ProjectIssues.js";
-import UserProjects from "views/Projects/Projects.js";
+import Projects from "views/Projects/Projects.js";
 
 const dashboardRoutes = [
   {
@@ -48,7 +48,7 @@ const dashboardRoutes = [
     path: "/projects",
     name: "Projects",
     icon: AssignmentOutlinedIcon,
-    component: UserProjects,
+    component: Projects,
     layout: "/admin",
     protected: false,
     showOnSideBar: true,

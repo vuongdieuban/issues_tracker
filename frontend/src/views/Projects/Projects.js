@@ -1,7 +1,7 @@
 import React from "react";
 
-const UserProjects = props => {
+const Projects = props => {
   return <React.Fragment>All of projects here</React.Fragment>;
 };
 
-export default UserProjects;
+export default Projects;

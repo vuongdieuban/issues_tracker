@@ -19,19 +19,24 @@ const useStyles = makeStyles(styles);
 
 export default function Header(props) {
   const classes = useStyles();
-
-  function makeBrand() {
-    let name = null;
+  const [routeInfo, setRouteInfo] = React.useState({
+    path: "",
+    name: ""
+  });
+  React.useEffect(() => {
+    console.log("react use effect");
     let { routes } = props;
+    let routeInfo = {};
     for (let i = 0; i < routes.length; i++) {
       const route = routes[i];
       if (window.location.href.indexOf(route.layout + route.path) !== -1) {
-        name = route.name;
+        routeInfo.name = route.name;
+        routeInfo.path = route.layout + route.path;
         break;
       }
     }
-    return name;
-  }
+    setRouteInfo(routeInfo);
+  }, [props.location.pathname]);
 
   const { color } = props;
   const appBarClasses = classNames({
@@ -43,8 +48,12 @@ export default function Header(props) {
       <Toolbar className={classes.container}>
         <div className={classes.flex}>
           {/* Here we create navbar brand, based on route name */}
-          <Button color="transparent" href="#" className={classes.title}>
-            {makeBrand()}
+          <Button
+            color="transparent"
+            href={routeInfo.path}
+            className={classes.title}
+          >
+            {routeInfo.name}
           </Button>
         </div>
         <Hidden smDown implementation="css">
