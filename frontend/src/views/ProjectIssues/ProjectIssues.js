@@ -24,12 +24,10 @@ const ProjectIssues = props => {
       mode.name = one of ["ProjectId", "UserId"]
       */
     <React.Fragment>
-      {user ? (
-        <Issues
-          user={user}
-          mode={{ name: "ProjectId", id: props.match.params.id }}
-        />
-      ) : null}
+      <Issues
+        user={user}
+        mode={{ name: "ProjectId", id: props.match.params.id }}
+      />
     </React.Fragment>
   );
 };
