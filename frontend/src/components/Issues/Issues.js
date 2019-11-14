@@ -21,19 +21,22 @@ const Issues = props => {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [user, setUser] = React.useState(null);
   const [issues, setIssues] = React.useState(null);
+  const [filteredIssues, setFilteredIssues] = React.useState({
+    bugIssues: [],
+    featureIssues: []
+  });
   const [currentIssue, setCurrentIssue] = React.useState({
-    index: null,
     issue: null,
     readOnly: true
   });
 
-  const handleViewEditClick = (issue, index, readOnly) => {
-    setCurrentIssue({ index, issue, readOnly });
+  const handleViewEditClick = (issue, readOnly) => {
+    setCurrentIssue({ issue, readOnly });
     handleModalOpen();
   };
 
-  const handleRemoveClick = (issue, index) => {
-    setCurrentIssue({ index, issue });
+  const handleRemoveClick = issue => {
+    setCurrentIssue({ issue });
     setOpenDialog(true);
   };
 
@@ -50,8 +53,8 @@ const Issues = props => {
   };
 
   const handleCurrentIssueSave = newIssue => {
-    const cloneIssue = JSON.parse(JSON.stringify(issues));
-    const index = currentIssue.index;
+    const cloneIssue = [...issues];
+    const index = issues.findIndex(issue => issue._id === newIssue._id);
     cloneIssue[index] = newIssue;
     setIssues(cloneIssue);
   };
@@ -74,11 +77,28 @@ const Issues = props => {
     }
   };
 
+  // update issues when props.issues change
   React.useEffect(() => {
     const { issues, user } = props;
     setIssues(issues);
     setUser(user);
   }, [props.issues, props.user]);
+
+  // update filteredIssues when issues change
+  React.useEffect(() => {
+    const bugIssues = [];
+    const featureIssues = [];
+    if (issues) {
+      issues.forEach(issue => {
+        if (issue.issueType.name === "Bug") {
+          bugIssues.push(issue);
+        } else if (issue.issueType.name === "Feature") {
+          featureIssues.push(issue);
+        }
+      });
+      setFilteredIssues({ bugIssues, featureIssues });
+    }
+  }, [issues]);
 
   return (
     <React.Fragment>
@@ -91,11 +111,11 @@ const Issues = props => {
               headerColor="primary"
               tabs={[
                 {
-                  tabName: "Bugs",
-                  tabIcon: BugReport,
+                  tabName: "Features",
+                  tabIcon: NoteAdd,
                   tabContent: (
                     <Tasks
-                      tasks={issues}
+                      tasks={filteredIssues.featureIssues}
                       user={user}
                       onViewEditClick={handleViewEditClick}
                       onRemoveClick={handleRemoveClick}
@@ -103,11 +123,11 @@ const Issues = props => {
                   )
                 },
                 {
-                  tabName: "Features",
-                  tabIcon: NoteAdd,
+                  tabName: "Bugs",
+                  tabIcon: BugReport,
                   tabContent: (
                     <Tasks
-                      tasks={issues}
+                      tasks={filteredIssues.bugIssues}
                       user={user}
                       onViewEditClick={handleViewEditClick}
                       onRemoveClick={handleRemoveClick}

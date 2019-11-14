@@ -39,14 +39,14 @@ export default function Tasks(props) {
         title: "Edit",
         className: classes.tableActionButtonIcon + " " + classes.edit,
         Icon: Edit,
-        onClick: () => onViewEditClick(task, index, false)
+        onClick: () => onViewEditClick(task, false)
       },
       {
         id: "remove",
         title: "Remove",
         className: classes.tableActionButtonIcon + " " + classes.close,
         Icon: Close,
-        onClick: () => onRemoveClick(task, index)
+        onClick: () => onRemoveClick(task)
       }
     ];
     const nonAuthorize = [
@@ -55,7 +55,7 @@ export default function Tasks(props) {
         title: "View",
         className: classes.tableActionButtonIcon + " " + classes.edit,
         Icon: VisibilityIcon,
-        onClick: () => onViewEditClick(task, index, true)
+        onClick: () => onViewEditClick(task, true)
       }
     ];
 
