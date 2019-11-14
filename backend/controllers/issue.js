@@ -9,7 +9,7 @@ class IssueController extends BaseController {
   getAll = async (req, res) => {
     const data = await this.model
       .find()
-      .sort("date")
+      .sort("-date")
       .populate({ path: "project", select: "name summary languages" })
       .populate({ path: "issueType", select: "name" })
       .populate({ path: "priority", select: "name level" })
@@ -42,7 +42,7 @@ class IssueController extends BaseController {
   getOne = async (req, res) => {
     const data = await this.model
       .find({ _id: req.params.id })
-      .sort("date")
+      .sort("-date")
       .populate({ path: "project", select: "name summary languages" })
       .populate({ path: "issueType", select: "name" })
       .populate({ path: "priority", select: "name level" })

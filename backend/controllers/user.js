@@ -11,6 +11,7 @@ class UserController {
   // get all issues related to this user
   getOne = async (req, res) => {
     const data = await Issue.find({ openBy: { _id: req.params.id } })
+      .sort("-date")
       .populate({ path: "project", select: "name" })
       .populate({ path: "issueType", select: "name" })
       .populate({ path: "priority", select: "name level" })
