@@ -41,7 +41,9 @@ export default function UserProfile(props) {
               </a>
             </CardAvatar>
             <CardBody profile>
-              <h6 className={classes.cardCategory}>CEO / CO-FOUNDER</h6>
+              <h6 className={classes.cardCategory}>
+                {user.isAdmin ? "ADMIN" : "MEMBER"}
+              </h6>
               <h4 className={classes.cardTitle}>{user.name}</h4>
               <p className={classes.description}>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam,
