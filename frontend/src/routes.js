@@ -18,17 +18,17 @@
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
+import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
 import ProjectIssues from "views/ProjectIssues/ProjectIssues.js";
-import UserProjects from "views/UserProjects/UserProjects.js";
+import UserProjects from "views/Projects/Projects.js";
 
 const dashboardRoutes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    rtlName: "",
     icon: Dashboard,
     component: DashboardPage,
     layout: "/admin",
@@ -37,7 +37,6 @@ const dashboardRoutes = [
   {
     path: "/projects/:id",
     name: "Project Issues",
-    rtlName: "",
     icon: "",
     component: ProjectIssues,
     layout: "/admin",
@@ -46,20 +45,18 @@ const dashboardRoutes = [
     exact: false
   },
   {
-    path: "/user/projects",
-    name: "User Projects",
-    rtlName: "",
-    icon: "",
+    path: "/projects",
+    name: "Projects",
+    icon: AssignmentOutlinedIcon,
     component: UserProjects,
     layout: "/admin",
-    protected: true,
-    showOnSideBar: false,
-    exact: false
+    protected: false,
+    showOnSideBar: true,
+    exact: true
   },
   {
     path: "/user",
     name: "User Profile",
-    rtlName: "",
     icon: Person,
     component: UserProfile,
     layout: "/admin",
