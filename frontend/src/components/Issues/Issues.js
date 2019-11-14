@@ -14,8 +14,9 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Tasks from "components/Tasks/Tasks.js";
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
 import IssueModal from "components/Modal/IssueModal.js";
-import issueService from "services/issueService";
-import projectService from "services/projectService";
+import issueService from "services/issueService.js";
+import projectService from "services/projectService.js";
+import userService from "services/userService.js";
 
 const Issues = props => {
   const [openModal, setOpenModal] = React.useState(false);
@@ -38,7 +39,7 @@ const Issues = props => {
       if (name === "ProjectId") {
         issues = await projectService.getOne(id);
       } else if (name === "UserId") {
-        issues = await projectService.getOne(id); // temporary holder for userService.getOne(id)
+        issues = await userService.getOne(id);
       } else {
         issues = await issueService.getAll();
       }

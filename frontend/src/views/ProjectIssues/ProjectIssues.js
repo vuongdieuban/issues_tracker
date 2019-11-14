@@ -18,12 +18,18 @@ const ProjectIssues = props => {
   }, [props.user]);
 
   return (
+    /* {Fetch issues by mode. 
+      Either get issues from all projects, from single project or from single user. 
+      Default is get all issues from all projects if mode is ignored} 
+      mode.name = one of ["ProjectId", "UserId"]
+      */
     <React.Fragment>
-      {/* {Fetch issues by mode. Either get issues from all projects, from single project or from single user. Default is get all issues from all projects if mode is ignored} */}
-      <Issues
-        user={user}
-        mode={{ name: "ProjectId", id: props.match.params.id }}
-      />
+      {user ? (
+        <Issues
+          user={user}
+          mode={{ name: "ProjectId", id: props.match.params.id }}
+        />
+      ) : null}
     </React.Fragment>
   );
 };
