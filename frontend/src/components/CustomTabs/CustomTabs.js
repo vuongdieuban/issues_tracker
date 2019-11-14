@@ -1,6 +1,4 @@
 import React from "react";
-// nodejs library that concatenates classes
-import classNames from "classnames";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 
@@ -21,14 +19,13 @@ const useStyles = makeStyles(styles);
 export default function CustomTabs(props) {
   const [value, setValue] = React.useState(0);
   const classes = useStyles();
-  const { headerColor, plainTabs, tabs, addon, title, rtlActive } = props;
+  const { headerColor, plainTabs, tabs, addon } = props;
 
   const handleChange = (event, newValue) => {
     if (newValue < tabs.length) {
       setValue(newValue);
     } else {
       addon.onClick({}, false);
-      console.log(value);
     }
   };
 
@@ -67,14 +64,16 @@ export default function CustomTabs(props) {
               />
             );
           })}
-          <Tab
-            classes={{
-              root: classes.tabRootButton,
-              selected: classes.tabSelected,
-              wrapper: classes.tabWrapper
-            }}
-            icon={<AddIcon />}
-          />
+          {addon ? (
+            <Tab
+              classes={{
+                root: classes.tabRootButton,
+                selected: classes.tabSelected,
+                wrapper: classes.tabWrapper
+              }}
+              icon={<AddIcon />}
+            />
+          ) : null}
         </Tabs>
       </CardHeader>
       <CardBody>

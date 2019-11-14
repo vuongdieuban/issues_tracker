@@ -154,10 +154,14 @@ const Issues = props => {
             <CustomTabs
               title="Tasks:"
               headerColor="primary"
-              addon={{
-                name: "Add",
-                onClick: handleViewEditClick
-              }}
+              addon={
+                user
+                  ? {
+                      name: "Add",
+                      onClick: handleViewEditClick
+                    }
+                  : null
+              }
               tabs={[
                 {
                   tabName: "Features",
