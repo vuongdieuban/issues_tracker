@@ -46,12 +46,12 @@ export default function Dashboard(props) {
     return displayProjects.map(project => (
       <GridItem xs={12} sm={12} md={4} key={project._id}>
         <Card chart>
-          <CardBody>
-            <Link to={`/admin/projects/${project._id}`}>
+          <Link to={`/admin/projects/${project._id}`}>
+            <CardBody>
               <h4 className={classes.cardTitle}>{project.name}</h4>
-            </Link>
-            <p className={classes.cardCategory}>{project.summary}</p>
-          </CardBody>
+              <p className={classes.cardCategory}>{project.summary}</p>
+            </CardBody>
+          </Link>
           <CardFooter>
             <div className={classes.stats}>
               <BuildOutlinedIcon />
