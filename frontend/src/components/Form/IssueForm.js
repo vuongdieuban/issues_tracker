@@ -19,6 +19,7 @@ const IssueForm = props => {
     priorities: [],
     status: [],
     readOnly: true,
+    validated: false,
     isDone: false
   });
   const [issue, setIssue] = React.useState({
@@ -85,17 +86,27 @@ const IssueForm = props => {
   });
 
   const handleSubmit = async event => {
+    // check form validate
     event.preventDefault();
-    try {
-      const newIssue = await issueService.save(issue);
-      handleSave(newIssue);
-    } catch (ex) {
-      if (
-        ex.response &&
-        (ex.response.status === 401 || ex.response.status === 403)
-      )
-        toast.error("Unauthorized!");
-      handleCancel();
+    setState({ ...state, validated: true }); // tell the form to start running its validity check
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+    } else {
+      try {
+        const newIssue = await issueService.save(issue);
+        handleSave(newIssue);
+      } catch (ex) {
+        if (
+          ex.response &&
+          (ex.response.status === 401 || ex.response.status === 403)
+        ) {
+          toast.error("Unauthorized!");
+          handleCancel();
+        } else if (ex.response && ex.response.status === 400) {
+          toast.error(`${ex.response.data}`);
+        }
+      }
     }
   };
 
@@ -137,7 +148,7 @@ const IssueForm = props => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} noValidate validated={state.validated}>
       <FormInput
         label="Title"
         path="title"
@@ -147,6 +158,7 @@ const IssueForm = props => {
         onChange={handleInputChange}
         placeholder="Title"
         readOnly={state.readOnly}
+        required
       />
       {renderFormSelect()}
       <FormInput
@@ -159,6 +171,7 @@ const IssueForm = props => {
         onChange={handleInputChange}
         placeholder="Description"
         readOnly={state.readOnly}
+        required
       />
       {state.readOnly ? (
         <Button
@@ -171,12 +184,7 @@ const IssueForm = props => {
         </Button>
       ) : (
         <React.Fragment>
-          <Button
-            color="primary"
-            size="sm"
-            variant="outlined"
-            onClick={handleSubmit}
-          >
+          <Button color="primary" size="sm" variant="outlined" type="submit">
             Save
           </Button>
           <Button
