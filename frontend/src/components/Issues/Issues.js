@@ -6,6 +6,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
+
 import { toast } from "react-toastify";
 
 import Button from "components/CustomButtons/Button";
@@ -67,7 +68,7 @@ const Issues = props => {
   };
 
   const handleRemoveClick = issue => {
-    setCurrentIssue({ issue });
+    setCurrentIssue({ ...currentIssue, issue });
     setOpenDialog(true);
   };
 
@@ -153,6 +154,10 @@ const Issues = props => {
             <CustomTabs
               title="Tasks:"
               headerColor="primary"
+              addon={{
+                name: "Add",
+                onClick: handleViewEditClick
+              }}
               tabs={[
                 {
                   tabName: "Features",

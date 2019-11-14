@@ -32,7 +32,7 @@ const customTabsStyle = {
     lineHeight: "24px",
     border: "0 !important",
     color: whiteColor + " !important",
-    marginLeft: "4px",
+    // marginLeft: "4px",
     "&:last-child": {
       marginLeft: "0px"
     }
@@ -54,7 +54,7 @@ const customTabsStyle = {
     marginTop: "1px",
     "& > svg,& > .material-icons": {
       verticalAlign: "middle",
-      margin: "-1px 5px 0 0 !important"
+      margin: "-1px 2px 0 0 !important"
     }
   }
 };

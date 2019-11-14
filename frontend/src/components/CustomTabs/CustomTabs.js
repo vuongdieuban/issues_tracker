@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 
 // material-ui components
 import { makeStyles } from "@material-ui/core/styles";
+import AddIcon from "@material-ui/icons/Add";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 // core components
@@ -19,31 +20,32 @@ const useStyles = makeStyles(styles);
 
 export default function CustomTabs(props) {
   const [value, setValue] = React.useState(0);
+  const classes = useStyles();
+  const { headerColor, plainTabs, tabs, addon, title, rtlActive } = props;
 
-  const handleChange = (event, value) => {
-    setValue(value);
+  const handleChange = (event, newValue) => {
+    if (newValue < tabs.length) {
+      setValue(newValue);
+    } else {
+      addon.onClick({}, false);
+      console.log(value);
+    }
   };
 
-  const classes = useStyles();
-  const { headerColor, plainTabs, tabs, title, rtlActive } = props;
-  const cardTitle = classNames({
-    [classes.cardTitle]: true,
-    [classes.cardTitleRTL]: rtlActive
-  });
   return (
     <Card plain={plainTabs}>
-      <CardHeader color={headerColor} plain={plainTabs}>
-        {title !== undefined ? <div className={cardTitle}>{title}</div> : null}
+      <CardHeader
+        color={headerColor}
+        plain={plainTabs}
+        className={classes.header}
+      >
         <Tabs
           value={value}
           onChange={handleChange}
           classes={{
             root: classes.tabsRoot,
-            indicator: classes.displayNone,
-            scrollButtons: classes.displayNone
+            indicator: classes.displayNone
           }}
-          variant="scrollable"
-          scrollButtons="auto"
         >
           {tabs.map((prop, key) => {
             var icon = {};
@@ -65,6 +67,14 @@ export default function CustomTabs(props) {
               />
             );
           })}
+          <Tab
+            classes={{
+              root: classes.tabRootButton,
+              selected: classes.tabSelected,
+              wrapper: classes.tabWrapper
+            }}
+            icon={<AddIcon />}
+          />
         </Tabs>
       </CardHeader>
       <CardBody>
