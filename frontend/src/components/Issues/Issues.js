@@ -87,14 +87,22 @@ const Issues = props => {
   const handleCurrentIssueSave = newIssue => {
     const cloneIssue = [...issues];
     const index = issues.findIndex(issue => issue._id === newIssue._id);
-    cloneIssue[index] = newIssue;
+    if (index > -1) {
+      // index exist in array (existing issue)
+      cloneIssue[index] = newIssue;
+    } else {
+      // index == -1 (new issue). Insert newIssue at beginning of array
+      cloneIssue.splice(0, 0, newIssue);
+    }
     setIssues(cloneIssue);
   };
 
   const handleCurrentIssueRemove = async () => {
     try {
       await issueService.remove(currentIssue.issue._id);
-      const index = currentIssue.index;
+      const index = issues.findIndex(
+        issue => issue._id === currentIssue.issue._id
+      );
       let cloneIssues = JSON.parse(JSON.stringify(issues));
       cloneIssues.splice(index, 1);
       setIssues(cloneIssues);
