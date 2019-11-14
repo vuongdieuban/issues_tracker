@@ -15,6 +15,7 @@ import Tasks from "components/Tasks/Tasks.js";
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
 import IssueModal from "components/Modal/IssueModal.js";
 import issueService from "services/issueService";
+import projectService from "services/projectService";
 
 const Issues = props => {
   const [openModal, setOpenModal] = React.useState(false);
@@ -29,6 +30,35 @@ const Issues = props => {
     issue: null,
     readOnly: true
   });
+
+  // fetch issues based on mode name and id
+  const fetchIssues = async ({ name, id }) => {
+    try {
+      let issues = [];
+      if (name === "ProjectId") {
+        issues = await projectService.getOne(id);
+      } else if (name === "UserId") {
+        issues = await projectService.getOne(id); // temporary holder for userService.getOne(id)
+      } else {
+        issues = await issueService.getAll();
+      }
+      return issues;
+    } catch (ex) {
+      if (
+        ex.response &&
+        (ex.response.status === 404 || ex.response.status === 400)
+      ) {
+        toast.error("Invalid Project Id");
+        return props.history.replace("/");
+      } else if (
+        ex.response &&
+        (ex.response.status === 401 || ex.response.status === 403)
+      ) {
+        toast.error("Unauthorize");
+        return props.history.replace("/");
+      }
+    }
+  };
 
   const handleViewEditClick = (issue, readOnly) => {
     setCurrentIssue({ issue, readOnly });
@@ -77,12 +107,25 @@ const Issues = props => {
     }
   };
 
+  // call on mount
+  React.useEffect(() => {
+    let { mode } = props;
+    if (!mode) {
+      // mode did not get passed in, default to get all issues across all projects
+      mode = { name: "All", id: "" };
+    }
+    const fetchData = async () => {
+      const issues = await fetchIssues(mode);
+      setIssues(issues);
+    };
+    fetchData();
+  }, []);
+
   // update issues when props.issues change
   React.useEffect(() => {
-    const { issues, user } = props;
-    setIssues(issues);
+    const { user } = props;
     setUser(user);
-  }, [props.issues, props.user]);
+  }, [props.user]);
 
   // update filteredIssues when issues change
   React.useEffect(() => {
