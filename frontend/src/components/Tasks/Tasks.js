@@ -91,10 +91,15 @@ export default function Tasks(props) {
             <TableCell className={classes.tableCell}>
               {getTaskStatus(task)}
             </TableCell>
-            <TableCell className={classes.tableCell}>{task.title}</TableCell>
             <TableCell className={classes.tableCell}>
-              by: {task.openBy.name}
+              <div className={classes.taskTitleText}>{task.title}</div>
+              <div className={classes.taskOpenByText}>
+                Opened by {task.openBy.name}
+              </div>
             </TableCell>
+            {/* <TableCell className={classes.tableCell}>
+              by: {task.openBy.name}
+            </TableCell> */}
             <TableCell className={classes.tableActions}>
               {renderAction(task, index)}
             </TableCell>

@@ -64,6 +64,13 @@ const tasksStyle = {
   },
   priorityLow: {
     color: "#84e028"
+  },
+  taskTitleText: {
+    color: "#4682B4"
+  },
+  taskOpenByText: {
+    fontSize: "12px",
+    color: "#a9a9a9"
   }
 };
 export default tasksStyle;
