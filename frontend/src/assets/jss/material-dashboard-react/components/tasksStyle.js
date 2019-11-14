@@ -6,6 +6,8 @@ import {
 } from "assets/jss/material-dashboard-react.js";
 import tooltipStyle from "assets/jss/material-dashboard-react/tooltipStyle.js";
 import checkboxAdnRadioStyle from "assets/jss/material-dashboard-react/checkboxAdnRadioStyle.js";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+
 const tasksStyle = {
   ...tooltipStyle,
   ...checkboxAdnRadioStyle,
@@ -66,7 +68,13 @@ const tasksStyle = {
     color: "#84e028"
   },
   taskTitleText: {
+    fontSize: "13px",
     color: "#4682B4"
+  },
+  taskProjectName: {
+    fontWeight: "bold",
+    color: "#585858",
+    fontSize: "12px"
   },
   taskOpenByText: {
     fontSize: "12px",

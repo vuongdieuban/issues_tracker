@@ -88,18 +88,16 @@ export default function Tasks(props) {
       <TableBody>
         {tasks.map((task, index) => (
           <TableRow key={index} className={classes.tableRow}>
-            <TableCell className={classes.tableCell}>
+            <TableCell className={(classes.tableCell, classes.taskStatus)}>
               {getTaskStatus(task)}
             </TableCell>
             <TableCell className={classes.tableCell}>
+              <div className={classes.taskProjectName}>{task.project.name}</div>
               <div className={classes.taskTitleText}>{task.title}</div>
               <div className={classes.taskOpenByText}>
                 Opened by {task.openBy.name}
               </div>
             </TableCell>
-            {/* <TableCell className={classes.tableCell}>
-              by: {task.openBy.name}
-            </TableCell> */}
             <TableCell className={classes.tableActions}>
               {renderAction(task, index)}
             </TableCell>

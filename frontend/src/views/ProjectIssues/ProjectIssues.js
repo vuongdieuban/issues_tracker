@@ -37,7 +37,11 @@ const ProjectIssues = props => {
     setUser(props.user);
   }, [props.user]);
 
-  return <Issues user={user} issues={issues} />;
+  return (
+    <React.Fragment>
+      <Issues user={user} issues={issues} />
+    </React.Fragment>
+  );
 };
 
 export default ProjectIssues;
