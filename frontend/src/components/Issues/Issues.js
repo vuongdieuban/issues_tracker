@@ -1,5 +1,6 @@
 import React from "react";
 import BugReport from "@material-ui/icons/BugReport";
+import AddIcon from "@material-ui/icons/Add";
 import NoteAdd from "@material-ui/icons/NoteAdd";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -27,6 +28,11 @@ const Issues = props => {
     issue: null,
     readOnly: true
   });
+
+  const handleAddClick = () => {
+    setCurrentIssue({ issue: {}, readOnly: false }); // empty object will make the IssueForm empty
+    handleModalOpen();
+  };
 
   const handleViewEditClick = (issue, readOnly) => {
     setCurrentIssue({ issue, readOnly });
@@ -135,7 +141,8 @@ const Issues = props => {
                 user
                   ? {
                       name: "Add",
-                      onClick: handleViewEditClick
+                      onClick: handleAddClick,
+                      icon: AddIcon
                     }
                   : null
               }

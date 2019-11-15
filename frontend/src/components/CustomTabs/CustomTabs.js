@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 // material-ui components
 import { makeStyles } from "@material-ui/core/styles";
-import AddIcon from "@material-ui/icons/Add";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 // core components
@@ -25,7 +24,7 @@ export default function CustomTabs(props) {
     if (newValue < tabs.length) {
       setValue(newValue);
     } else {
-      addon.onClick({}, false);
+      addon.onClick();
     }
   };
 
@@ -71,7 +70,8 @@ export default function CustomTabs(props) {
                 selected: classes.tabSelected,
                 wrapper: classes.tabWrapper
               }}
-              icon={<AddIcon />}
+              style={{ padding: "0" }}
+              icon={<addon.icon />}
             />
           ) : null}
         </Tabs>
