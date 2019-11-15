@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Form } from "react-bootstrap";
-import { toast } from "react-toastify";
 import Button from "components/CustomButtons/Button.js";
 import FormInput from "components/FormInput/FormInput.js";
 import FormSelect from "components/FormSelect/FormSelect.js";
@@ -10,7 +9,6 @@ import issueTypeService from "services/issueTypeService";
 import priorityService from "services/priorityService";
 import statusService from "services/statusService";
 import authService from "services/authService";
-import issueService from "services/issueService";
 
 const IssueForm = props => {
   const [state, setState] = React.useState({
