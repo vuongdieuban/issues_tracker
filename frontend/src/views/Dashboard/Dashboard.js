@@ -8,7 +8,6 @@ import Store from "@material-ui/icons/Store";
 import Alarm from "@material-ui/icons/Alarm";
 import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
-import Search from "@material-ui/icons/Search";
 import BuildOutlinedIcon from "@material-ui/icons/BuildOutlined";
 // core components
 import GridItem from "components/Grid/GridItem.js";
@@ -18,8 +17,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
-import Button from "components/CustomButtons/Button.js";
+
 import projectService from "services/projectService";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
@@ -65,22 +63,6 @@ export default function Dashboard(props) {
 
   return (
     <div>
-      <div className={classes.searchWrapper}>
-        <CustomInput
-          formControlProps={{
-            className: classes.margin + " " + classes.search
-          }}
-          inputProps={{
-            placeholder: "Search",
-            inputProps: {
-              "aria-label": "Search"
-            }
-          }}
-        />
-        <Button color="white" aria-label="edit" justIcon round>
-          <Search />
-        </Button>
-      </div>
       {/* Display number of projects, bugs and features*/}
       <GridContainer>
         <GridItem xs={12} sm={6} md={4}>

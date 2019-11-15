@@ -24,7 +24,6 @@ export default function Header(props) {
     name: ""
   });
   React.useEffect(() => {
-    console.log("react use effect");
     let { routes } = props;
     let routeInfo = {};
     for (let i = 0; i < routes.length; i++) {
