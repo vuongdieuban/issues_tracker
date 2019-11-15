@@ -64,7 +64,12 @@ const IssueForm = props => {
       if (state.isDone) {
         const user = authService.getCurrentUser();
         const newIssue = { ...issue };
-        newIssue.project = state.projects[0]._id;
+        // if mode is ProjectId then this is arrived from /projects/:id
+        // set default project to the current project (/projects/:id) id
+        newIssue.project =
+          props.mode.name === "ProjectId"
+            ? props.mode.id
+            : state.projects[0]._id;
         newIssue.issueType = state.issueTypes[0]._id;
         newIssue.priority = state.priorities[0]._id;
         newIssue.status = state.status[0]._id;
