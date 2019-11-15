@@ -12,14 +12,35 @@ import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js"
 const ProjectsView = props => {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const [projects, setProjects] = React.useState(null);
+  const [state, setState] = React.useState({
+    allProjects: [],
+    filteredProjects: [],
+    searchValue: ""
+  });
+  const { allProjects, filteredProjects, searchValue } = state;
+
+  const handleSearchChange = e => {
+    const searchValue = e.currentTarget.value;
+    setState({ ...state, searchValue });
+  };
+
+  // call on mount
   React.useEffect(() => {
     const fetchData = async () => {
-      const projects = await projectService.getAll();
-      setProjects(projects);
+      const allProjects = await projectService.getAll();
+      setState({ ...state, allProjects, filteredProjects: allProjects });
     };
     fetchData();
   }, []);
+
+  // watch searchValue and filter the projects
+  React.useEffect(() => {
+    const filteredProjects = allProjects.filter(project =>
+      project.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setState({ ...state, filteredProjects });
+  }, [searchValue]);
+
   return (
     <React.Fragment>
       <div className={classes.searchWrapper}>
@@ -31,14 +52,17 @@ const ProjectsView = props => {
             placeholder: "Search",
             inputProps: {
               "aria-label": "Search"
-            }
+            },
+            value: searchValue,
+            onChange: handleSearchChange
           }}
         />
         <Button color="white" aria-label="edit" justIcon round>
           <Search />
         </Button>
       </div>
-      {projects ? <Projects projects={projects} /> : null}
+
+      {allProjects ? <Projects projects={filteredProjects} /> : null}
     </React.Fragment>
   );
 };
