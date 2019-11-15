@@ -1,9 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import CustomInput from "components/CustomInput/CustomInput.js";
-import Button from "components/CustomButtons/Button.js";
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from "@material-ui/icons/Add";
 import Search from "@material-ui/icons/Search";
-
+import CustomInput from "components/CustomInput/CustomInput.js";
 import Projects from "components/Projects/Projects.js";
 import projectService from "services/projectService.js";
 
@@ -44,6 +44,9 @@ const ProjectsView = props => {
   return (
     <React.Fragment>
       <div className={classes.searchWrapper}>
+        <IconButton>
+          <Search />
+        </IconButton>
         <CustomInput
           formControlProps={{
             className: classes.margin + " " + classes.search
@@ -57,9 +60,9 @@ const ProjectsView = props => {
             onChange: handleSearchChange
           }}
         />
-        <Button color="white" aria-label="edit" justIcon round>
-          <Search />
-        </Button>
+        <IconButton>
+          <AddIcon />
+        </IconButton>
       </div>
 
       {allProjects ? <Projects projects={filteredProjects} /> : null}
