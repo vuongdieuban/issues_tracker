@@ -4,7 +4,7 @@ class BaseController {
   }
 
   getAll = async (req, res) => {
-    return res.status(200).json(await this.model.find().sort("date"));
+    return res.status(200).json(await this.model.find().sort("-date"));
   };
 
   post = async (req, res) => {
