@@ -1,6 +1,6 @@
 import React from "react";
 import Issues from "components/Issues/Issues.js";
-import authService from "services/authService";
+import authService from "services/authService.js";
 import projectService from "services/projectService.js";
 import { toast } from "react-toastify";
 
