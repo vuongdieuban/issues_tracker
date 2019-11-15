@@ -14,7 +14,7 @@ const issueSchema = new mongoose.Schema({
   priority: { type: mongoose.Schema.Types.ObjectId, ref: "Priority" },
   openBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   status: { type: mongoose.Schema.Types.ObjectId, ref: "Status" },
-  date: { type: Date, default: Date.now() }
+  date: { type: Date, default: Date.now }
 });
 
 issueSchema.statics.validate = function(data) {

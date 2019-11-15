@@ -5,7 +5,7 @@ const projectSchema = new mongoose.Schema({
   name: { type: String, required: true },
   summary: { type: String, required: true },
   languages: { type: String, required: true },
-  date: { type: Date, default: Date.now() }
+  date: { type: Date, default: Date.now }
 });
 
 projectSchema.statics.validate = function(data) {
