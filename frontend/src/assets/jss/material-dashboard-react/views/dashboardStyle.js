@@ -83,6 +83,12 @@ const dashboardStyle = {
     justifyContent: "center",
     alignItems: "center",
     marginBottom: "15px"
+  },
+  latestText: {
+    color: "#A9A9A9",
+    textTransform: "uppercase",
+    fontWeight: "bold",
+    fontSize: "14px"
   }
 };
 

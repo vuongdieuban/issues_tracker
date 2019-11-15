@@ -17,48 +17,56 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-
-import projectService from "services/projectService";
-
+import Issues from "components/Issues/Issues.js";
+import Projects from "components/Projects/Projects.js";
+import projectService from "services/projectService.js";
+import issueService from "services/issueService.js";
+import authService from "services/authService.js";
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
 export default function Dashboard(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const [projects, setProjects] = React.useState(null);
+  const [state, setState] = React.useState({
+    projects: [],
+    issues: [],
+    user: null
+  });
 
   // Call when component mounted
   React.useEffect(() => {
     const fetchData = async () => {
-      const projects = await projectService.getAll();
-      setProjects(projects);
+      const user = authService.getCurrentUser();
+      const projects = await getLatestProjects();
+      const issues = await getLatestIssues();
+      setState({ ...state, projects, issues, user });
     };
     fetchData();
   }, []);
 
-  const renderProjects = () => {
-    let displayProjects = projects;
-    if (displayProjects.length >= 3) {
-      displayProjects = displayProjects.slice(0, 3);
+  React.useEffect(() => {
+    // console.log("set user on PROPS");
+    setState({ ...state, user: props.user });
+  }, [props.user]);
+
+  const getLatestProjects = async () => {
+    let projects = await projectService.getAll();
+    if (projects.length >= 3) {
+      projects = projects.slice(0, 3);
     }
-    return displayProjects.map(project => (
-      <GridItem xs={12} sm={12} md={4} key={project._id}>
-        <Card chart>
-          <Link to={`/admin/projects/${project._id}`}>
-            <CardBody>
-              <h4 className={classes.cardTitle}>{project.name}</h4>
-              <p className={classes.cardCategory}>{project.summary}</p>
-            </CardBody>
-          </Link>
-          <CardFooter>
-            <div className={classes.stats}>
-              <BuildOutlinedIcon />
-              {project.languages}
-            </div>
-          </CardFooter>
-        </Card>
-      </GridItem>
-    ));
+    return projects;
+  };
+
+  const getLatestIssues = async () => {
+    let issues = await issueService.getAll();
+    if (issues.length >= 6) {
+      issues = issues.slice(0, 6);
+    }
+    return issues;
+  };
+
+  const handleIssuesModified = issues => {
+    setState({ ...state, issues });
   };
 
   return (
@@ -122,17 +130,16 @@ export default function Dashboard(props) {
       </GridContainer>
 
       {/* Display all the projets*/}
-      <span
-        style={{
-          color: "#A9A9A9",
-          textTransform: "uppercase",
-          fontWeight: "bold",
-          fontSize: "14px"
-        }}
-      >
-        Latest Projects
-      </span>
-      {projects ? <GridContainer>{renderProjects()}</GridContainer> : null}
+      <span className={classes.latestText}>Latest Projects</span>
+      <Projects projects={state.projects} />
+
+      {/* Display Issues */}
+      <span className={classes.latestText}>Latest Issues</span>
+      <Issues
+        user={state.user}
+        issues={state.issues}
+        onIssuesModified={handleIssuesModified}
+      />
     </div>
   );
 }
