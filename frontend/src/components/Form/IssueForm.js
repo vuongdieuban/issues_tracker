@@ -72,6 +72,14 @@ const IssueForm = props => {
         setIssue(newIssue);
       }
     }
+
+    // if mode === ProjectId, then the options of project field is only the current project
+    if (props.mode.name === "ProjectId") {
+      const projectOptions = state.projects.filter(
+        project => project._id === props.mode.id
+      );
+      setState({ ...state, projects: projectOptions });
+    }
   }, [state.isDone]);
 
   const mapToViewModel = issue => ({

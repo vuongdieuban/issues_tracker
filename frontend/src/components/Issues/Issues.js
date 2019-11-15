@@ -208,6 +208,7 @@ const Issues = props => {
         onSave={handleCurrentIssueSave}
         issue={currentIssue.issue}
         readOnly={currentIssue.readOnly}
+        mode={props.mode}
       />
 
       {/* {Display remove confimation dialog} */}
