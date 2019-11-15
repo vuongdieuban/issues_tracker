@@ -64,12 +64,11 @@ const IssueForm = props => {
       if (state.isDone) {
         const user = authService.getCurrentUser();
         const newIssue = { ...issue };
-        // if mode is ProjectId then this is arrived from /projects/:id
+        // if projectId exist then this is arrived from /projects/:id
         // set default project to the current project (/projects/:id) id
-        newIssue.project =
-          props.mode.name === "ProjectId"
-            ? props.mode.id
-            : state.projects[0]._id;
+        newIssue.project = props.projectId
+          ? props.projectId
+          : state.projects[0]._id;
         newIssue.issueType = state.issueTypes[0]._id;
         newIssue.priority = state.priorities[0]._id;
         newIssue.status = state.status[0]._id;
@@ -78,10 +77,10 @@ const IssueForm = props => {
       }
     }
 
-    // if mode === ProjectId, then the options of project field is only the current project
-    if (props.mode.name === "ProjectId") {
+    // if projectId exist, then the options of project field is limit to only the current project
+    if (props.projectId) {
       const projectOptions = state.projects.filter(
-        project => project._id === props.mode.id
+        project => project._id === props.projectId
       );
       setState({ ...state, projects: projectOptions });
     }
@@ -104,22 +103,10 @@ const IssueForm = props => {
     setState({ ...state, validated: true }); // tell the form to start running its validity check
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
+      // don't submit if validity is falise
       event.stopPropagation();
     } else {
-      try {
-        const newIssue = await issueService.save(issue);
-        handleSave(newIssue);
-      } catch (ex) {
-        if (
-          ex.response &&
-          (ex.response.status === 401 || ex.response.status === 403)
-        ) {
-          toast.error("Unauthorized!");
-          handleCancel();
-        } else if (ex.response && ex.response.status === 400) {
-          toast.error(`${ex.response.data}`);
-        }
-      }
+      props.onSave(issue); // pass back the correctly verified issue
     }
   };
 
@@ -132,12 +119,6 @@ const IssueForm = props => {
 
   const handleCancel = () => {
     props.onClose();
-  };
-
-  const handleSave = newIssue => {
-    const { onSave, onClose } = props;
-    onSave(newIssue);
-    onClose();
   };
 
   const renderFormSelect = () => {

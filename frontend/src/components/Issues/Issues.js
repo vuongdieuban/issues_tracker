@@ -6,9 +6,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
-
 import { toast } from "react-toastify";
-
 import Button from "components/CustomButtons/Button";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -16,14 +14,11 @@ import Tasks from "components/Tasks/Tasks.js";
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
 import IssueModal from "components/Modal/IssueModal.js";
 import issueService from "services/issueService.js";
-import projectService from "services/projectService.js";
-import userService from "services/userService.js";
 
 const Issues = props => {
   const [openModal, setOpenModal] = React.useState(false);
   const [openDialog, setOpenDialog] = React.useState(false);
   const [user, setUser] = React.useState(null);
-  const [issues, setIssues] = React.useState(null);
   const [filteredIssues, setFilteredIssues] = React.useState({
     bugIssues: [],
     featureIssues: []
@@ -32,35 +27,6 @@ const Issues = props => {
     issue: null,
     readOnly: true
   });
-
-  // fetch issues based on mode name and id
-  const fetchIssues = async ({ name, id }) => {
-    try {
-      let issues = [];
-      if (name === "ProjectId") {
-        issues = await projectService.getOne(id);
-      } else if (name === "UserId") {
-        issues = await userService.getOne(id);
-      } else {
-        issues = await issueService.getAll();
-      }
-      return issues;
-    } catch (ex) {
-      if (
-        ex.response &&
-        (ex.response.status === 404 || ex.response.status === 400)
-      ) {
-        toast.error("Invalid Project Id");
-        return props.history.replace("/");
-      } else if (
-        ex.response &&
-        (ex.response.status === 401 || ex.response.status === 403)
-      ) {
-        toast.error("Unauthorize");
-        return props.history.replace("/");
-      }
-    }
-  };
 
   const handleViewEditClick = (issue, readOnly) => {
     setCurrentIssue({ issue, readOnly });
@@ -84,29 +50,45 @@ const Issues = props => {
     setOpenDialog(false);
   };
 
-  const handleCurrentIssueSave = newIssue => {
-    const cloneIssue = [...issues];
-    const index = issues.findIndex(issue => issue._id === newIssue._id);
-    if (index > -1) {
-      // index exist in array (existing issue)
-      cloneIssue[index] = newIssue;
-    } else {
-      // index == -1 (new issue). Insert newIssue at beginning of array
-      cloneIssue.splice(0, 0, newIssue);
+  const handleCurrentIssueSave = async issue => {
+    try {
+      const modIssue = await issueService.save(issue);
+      const { issues, onIssuesModified } = props;
+      const modifiedIssues = [...issues];
+      const index = issues.findIndex(issue => issue._id === modIssue._id);
+      if (index > -1) {
+        // index exist in array (existing issue)
+        modifiedIssues[index] = modIssue;
+      } else {
+        // index == -1 (new issue). Insert modIssue at beginning of array
+        modifiedIssues.splice(0, 0, modIssue);
+      }
+      setOpenModal(false);
+      onIssuesModified(modifiedIssues); // pass the modified issues back
+    } catch (ex) {
+      if (
+        ex.response &&
+        (ex.response.status === 401 || ex.response.status === 403)
+      ) {
+        toast.error("Unauthorized!");
+        props.history.replace("/");
+      } else if (ex.response && ex.response.status === 400) {
+        toast.error(`${ex.response.data}`);
+      }
     }
-    setIssues(cloneIssue);
   };
 
   const handleCurrentIssueRemove = async () => {
+    const { issues, onIssuesModified } = props;
     try {
       await issueService.remove(currentIssue.issue._id);
       const index = issues.findIndex(
         issue => issue._id === currentIssue.issue._id
       );
-      let cloneIssues = JSON.parse(JSON.stringify(issues));
-      cloneIssues.splice(index, 1);
-      setIssues(cloneIssues);
+      let modifiedIssues = [...issues];
+      modifiedIssues.splice(index, 1);
       setOpenDialog(false);
+      onIssuesModified(modifiedIssues); // pass the modified issues back
     } catch (ex) {
       if (
         ex.response &&
@@ -117,20 +99,6 @@ const Issues = props => {
     }
   };
 
-  // call on mount
-  React.useEffect(() => {
-    let { mode } = props;
-    if (!mode) {
-      // mode did not get passed in, default to get all issues across all projects
-      mode = { name: "All", id: "" };
-    }
-    const fetchData = async () => {
-      const issues = await fetchIssues(mode);
-      setIssues(issues);
-    };
-    fetchData();
-  }, []);
-
   // update issues when props.issues change
   React.useEffect(() => {
     const { user } = props;
@@ -139,6 +107,7 @@ const Issues = props => {
 
   // update filteredIssues when issues change
   React.useEffect(() => {
+    const { issues } = props;
     const bugIssues = [];
     const featureIssues = [];
     if (issues) {
@@ -151,12 +120,12 @@ const Issues = props => {
       });
       setFilteredIssues({ bugIssues, featureIssues });
     }
-  }, [issues]);
+  }, [props.issues]);
 
   return (
     <React.Fragment>
       {/* Display all issue sorted by date*/}
-      {issues ? (
+      {props.issues ? (
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <CustomTabs
@@ -208,7 +177,7 @@ const Issues = props => {
         onSave={handleCurrentIssueSave}
         issue={currentIssue.issue}
         readOnly={currentIssue.readOnly}
-        mode={props.mode}
+        projectId={props.projectId}
       />
 
       {/* {Display remove confimation dialog} */}
