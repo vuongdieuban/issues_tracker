@@ -1,22 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
 // react plugin for creating charts
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
-import Store from "@material-ui/icons/Store";
 import Alarm from "@material-ui/icons/Alarm";
-import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
-import BuildOutlinedIcon from "@material-ui/icons/BuildOutlined";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
+import CheckCircleOutlineOutlinedIcon from "@material-ui/icons/CheckCircleOutlineOutlined";
+import BugReportOutlinedIcon from "@material-ui/icons/BugReportOutlined";
 // core components
-import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardIcon from "components/Card/CardIcon.js";
-import CardBody from "components/Card/CardBody.js";
-import CardFooter from "components/Card/CardFooter.js";
+import Stats from "components/Stats/Stats.js";
 import Issues from "components/Issues/Issues.js";
 import Projects from "components/Projects/Projects.js";
 import projectService from "services/projectService.js";
@@ -30,6 +24,11 @@ export default function Dashboard(props) {
   const [state, setState] = React.useState({
     projects: [],
     issues: [],
+    latestProjects: [],
+    latestIssues: [],
+    amountLatestIssues: 6,
+    closedIssues: 0,
+    openIssues: 0,
     user: null
   });
 
@@ -37,8 +36,8 @@ export default function Dashboard(props) {
   React.useEffect(() => {
     const fetchData = async () => {
       const user = authService.getCurrentUser();
-      const projects = await getLatestProjects();
-      const issues = await getLatestIssues();
+      const projects = await projectService.getAll();
+      const issues = await issueService.getAll();
       setState({ ...state, projects, issues, user });
     };
     fetchData();
@@ -49,85 +48,108 @@ export default function Dashboard(props) {
     setState({ ...state, user: props.user });
   }, [props.user]);
 
-  const getLatestProjects = async () => {
-    let projects = await projectService.getAll();
+  React.useEffect(() => {
+    const latestProjects = getLatestProjects();
+    setState({ ...state, latestProjects });
+  }, [state.projects]);
+
+  React.useEffect(() => {
+    const latestIssues = getLatestIssues();
+    // count total number of issues, open and close and update those number
+    const openIssues = state.issues.filter(
+      issue => issue.status.name === "Open"
+    ).length;
+    const closedIssues = state.issues.length - openIssues;
+    setState({ ...state, latestIssues, openIssues, closedIssues });
+  }, [state.issues]);
+
+  const getLatestProjects = () => {
+    let { projects } = JSON.parse(JSON.stringify(state));
     if (projects.length >= 3) {
       projects = projects.slice(0, 3);
     }
     return projects;
   };
 
-  const getLatestIssues = async () => {
-    let issues = await issueService.getAll();
-    if (issues.length >= 6) {
-      issues = issues.slice(0, 6);
+  const getLatestIssues = () => {
+    let { issues } = JSON.parse(JSON.stringify(state));
+    const amount = state.amountLatestIssues;
+    if (issues.length >= amount) {
+      issues = issues.slice(0, amount);
     }
     return issues;
   };
 
-  const handleIssuesModified = issues => {
+  const handleIssuesModified = latestModIssues => {
+    // replace the issues[0,amountLatestIssues] with latest Issues. Then update setState the issues.
+    let { issues } = JSON.parse(JSON.stringify(state));
+    const amount = state.amountLatestIssues;
+    if (issues.length >= amount) {
+      issues.splice(0, amount);
+      issues = latestModIssues.concat(issues);
+    } else {
+      issues = latestModIssues;
+    }
     setState({ ...state, issues });
+  };
+
+  const renderStats = () => {
+    const stats = [
+      {
+        headerColor: "rose",
+        icon: AssignmentOutlinedIcon,
+        category: "Projects",
+        title: state.projects.length,
+        unit: "",
+        footer: "Last 30 days",
+        footerIcon: Alarm
+      },
+      {
+        headerColor: "info",
+        icon: BugReportOutlinedIcon,
+        category: "Total Issues",
+        title: state.issues.length,
+        unit: "",
+        footer: "Last few days",
+        footerIcon: Alarm
+      },
+      {
+        headerColor: "success",
+        icon: CheckCircleOutlineOutlinedIcon,
+        category: "Closed Issues",
+        title: state.closedIssues,
+        unit: "",
+        footer: "Last few days",
+        footerIcon: Alarm
+      },
+      {
+        headerColor: "warning",
+        icon: InfoOutlinedIcon,
+        category: "Open Issues",
+        title: state.openIssues,
+        unit: "",
+        footer: "Last few days",
+        footerIcon: Alarm
+      }
+    ];
+    return stats.map((stat, index) => (
+      <Stats
+        key={index}
+        headerColor={stat.headerColor}
+        cardIcon={stat.icon}
+        category={stat.category}
+        title={stat.title}
+        unit={stat.unit}
+        footer={stat.footer}
+        footerIcon={stat.footerIcon}
+      />
+    ));
   };
 
   return (
     <div>
       {/* Display number of projects, bugs and features*/}
-      <GridContainer>
-        <GridItem xs={12} sm={6} md={4}>
-          <Card>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-                <Alarm />
-              </CardIcon>
-              <p className={classes.cardCategory}>Used Space</p>
-              <h3 className={classes.cardTitle}>
-                49/50 <small>GB</small>
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  Get more space
-                </a>
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={4}>
-          <Card>
-            <CardHeader color="success" stats icon>
-              <CardIcon color="success">
-                <Store />
-              </CardIcon>
-              <p className={classes.cardCategory}>Revenue</p>
-              <h3 className={classes.cardTitle}>$34,245</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <DateRange />
-                Last 24 Hours
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={4}>
-          <Card>
-            <CardHeader color="danger" stats icon>
-              <CardIcon color="danger">
-                <Alarm />
-              </CardIcon>
-              <p className={classes.cardCategory}>Fixed Issues</p>
-              <h3 className={classes.cardTitle}>75</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <LocalOffer />
-                Tracked from Github
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-      </GridContainer>
+      <GridContainer>{renderStats()}</GridContainer>
 
       {/* Display all the projets*/}
       <span className={classes.latestText}>Latest Projects</span>
@@ -137,7 +159,7 @@ export default function Dashboard(props) {
       <span className={classes.latestText}>Latest Issues</span>
       <Issues
         user={state.user}
-        issues={state.issues}
+        issues={state.latestIssues}
         onIssuesModified={handleIssuesModified}
       />
     </div>
