@@ -3,6 +3,7 @@ import http from "services/httpService";
 const PROJECT_URL = process.env.REACT_APP_BACKEND_URL + "/projects";
 
 const getAll = async () => {
+  console.log("url is", PROJECT_URL);
   const { data } = await http.get(PROJECT_URL);
   return data;
 };
