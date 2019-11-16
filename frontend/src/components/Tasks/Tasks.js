@@ -12,7 +12,7 @@ import TableCell from "@material-ui/core/TableCell";
 import Edit from "@material-ui/icons/Edit";
 import Close from "@material-ui/icons/Close";
 import CheckCircleOutlined from "@material-ui/icons/CheckCircleOutlined";
-import ReportProblemOutlined from "@material-ui/icons/ReportProblemOutlined";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 
 // core components
@@ -26,7 +26,7 @@ export default function Tasks(props) {
   const getTaskStatus = task => {
     if (task.status.name === "Open") {
       const statusClassName = classes["priority" + task.priority.name];
-      return <ReportProblemOutlined className={statusClassName} />;
+      return <InfoOutlinedIcon className={statusClassName} />;
     }
     return <CheckCircleOutlined />;
   };
