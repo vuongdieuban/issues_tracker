@@ -1,16 +1,13 @@
 # Issues Tracker
 
 ## Descriptions:
+This project is an issues tracker for personal or team use. User can create and track issues related to projects, have info options realted to status(open/close), priority level and type (bug/feature). Authentication with Google OAuth2 and JWT, role based authorization for view/edit issues.
 
-This project emulates service like Bit.ly where user can post a long url and get a short url back, which can redirect to the long url address. User can sign in with their Google Account (OAuth2) and save the shortened urls for re-use.
+Main objective of this issue tracker is for me to track my progress when building other future project
 
 Live demo at: http://issues.banvuong.com/
 
 ## Details:
-
-This project is an issues tracker for personal or team use. User can create and track issues related to projects, have info options realted to status(open/close), priority level and type (bug/feature). Authentication with Google OAuth2 and JWT, role based authorization for view/edit issues.
-
-Main objective of this issue tracker is for me to track my progress when building other future project
 
 ### Backend:
 
