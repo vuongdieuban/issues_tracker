@@ -60,9 +60,9 @@ const ProjectsView = props => {
             onChange: handleSearchChange
           }}
         />
-        <IconButton>
+        {/* <IconButton>
           <AddIcon />
-        </IconButton>
+        </IconButton> */}
       </div>
 
       {allProjects ? <Projects projects={filteredProjects} /> : null}
