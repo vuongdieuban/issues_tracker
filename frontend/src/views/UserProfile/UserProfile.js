@@ -12,8 +12,8 @@ import CardBody from "components/Card/CardBody.js";
 import avatar from "assets/img/faces/marc.jpg";
 
 import Issues from "components/Issues/Issues.js";
-import userService from "services/userService.js";
 import authService from "services/authService.js";
+import issueService from "services/issueService.js";
 
 const styles = {};
 const useStyles = makeStyles(styles);
@@ -35,7 +35,7 @@ export default function UserProfile(props) {
 
     const fetchData = async () => {
       try {
-        const issues = await userService.getOne(currentUser._id);
+        const issues = await issueService.getAll({ openBy: currentUser._id });
         setIssues(issues);
       } catch (ex) {
         if (

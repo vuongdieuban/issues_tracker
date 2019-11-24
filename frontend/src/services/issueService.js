@@ -2,8 +2,14 @@ import http from "services/httpService";
 
 const ISSUE_URL = process.env.REACT_APP_BACKEND_URL + "/issues";
 
-const getAll = async () => {
-  const { data } = await http.get(ISSUE_URL);
+const getAll = async query => {
+  // query should be an object with properties project:projectId an openBy: userId
+  let queryString = "?";
+  let { project, openBy } = query;
+  if (project) queryString = queryString + `project=${project}`;
+  if (openBy) queryString = queryString + `openBy=${openBy}`;
+
+  const { data } = await http.get(ISSUE_URL + queryString);
   return data;
 };
 

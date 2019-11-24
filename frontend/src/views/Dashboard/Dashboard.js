@@ -37,7 +37,7 @@ export default function Dashboard(props) {
     const fetchData = async () => {
       const user = authService.getCurrentUser();
       const projects = await projectService.getAll();
-      const issues = await issueService.getAll();
+      const issues = await issueService.getAll({});
       setState({ ...state, projects, issues, user });
     };
     fetchData();

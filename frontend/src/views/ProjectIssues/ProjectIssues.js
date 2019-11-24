@@ -1,7 +1,7 @@
 import React from "react";
 import Issues from "components/Issues/Issues.js";
 import authService from "services/authService.js";
-import projectService from "services/projectService.js";
+import issueService from "services/issueService.js";
 import { toast } from "react-toastify";
 
 const ProjectIssues = props => {
@@ -12,7 +12,9 @@ const ProjectIssues = props => {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const issues = await projectService.getOne(props.match.params.id);
+        const issues = await issueService.getAll({
+          project: props.match.params.id
+        });
         setIssues(issues);
       } catch (ex) {
         if (
