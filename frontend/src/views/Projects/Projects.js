@@ -6,12 +6,15 @@ import Search from "@material-ui/icons/Search";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Projects from "components/Projects/Projects.js";
 import projectService from "services/projectService.js";
+import authService from "services/authService.js";
+
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
 const ProjectsView = props => {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
+  const [user, setUser] = React.useState(null);
   const [state, setState] = React.useState({
     allProjects: [],
     filteredProjects: [],
@@ -31,6 +34,8 @@ const ProjectsView = props => {
       setState({ ...state, allProjects, filteredProjects: allProjects });
     };
     fetchData();
+    const currentUser = authService.getCurrentUser();
+    setUser(currentUser);
   }, []);
 
   // watch searchValue and filter the projects
@@ -40,6 +45,11 @@ const ProjectsView = props => {
     );
     setState({ ...state, filteredProjects });
   }, [searchValue]);
+
+  React.useEffect(() => {
+    setUser(props.user);
+  }, [props.user]);
+
 
   return (
     <React.Fragment>
@@ -60,9 +70,9 @@ const ProjectsView = props => {
             onChange: handleSearchChange
           }}
         />
-        {/* <IconButton>
+        {user ? (<IconButton>
           <AddIcon />
-        </IconButton> */}
+        </IconButton>) : null}
       </div>
 
       {allProjects ? <Projects projects={filteredProjects} /> : null}
