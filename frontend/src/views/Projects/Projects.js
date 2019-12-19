@@ -5,9 +5,9 @@ import AddIcon from "@material-ui/icons/Add";
 import Search from "@material-ui/icons/Search";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Projects from "components/Projects/Projects.js";
+import ProjectModal from "components/Modal/ProjectModal.js";
 import projectService from "services/projectService.js";
 import authService from "services/authService.js";
-
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
@@ -15,6 +15,7 @@ const ProjectsView = props => {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const [user, setUser] = React.useState(null);
+  const [openModal, setOpenModal] = React.useState(false);
   const [state, setState] = React.useState({
     allProjects: [],
     filteredProjects: [],
@@ -25,6 +26,16 @@ const ProjectsView = props => {
   const handleSearchChange = e => {
     const searchValue = e.currentTarget.value;
     setState({ ...state, searchValue });
+  };
+
+  const handleModalOpen = () => {
+    console.log("open modal");
+    setOpenModal(true);
+  };
+
+  const handleModalClose = () => {
+    console.log("close modal");
+    setOpenModal(false);
   };
 
   // call on mount
@@ -46,10 +57,10 @@ const ProjectsView = props => {
     setState({ ...state, filteredProjects });
   }, [searchValue]);
 
+  // if user login during this page, props.user change from top level
   React.useEffect(() => {
     setUser(props.user);
   }, [props.user]);
-
 
   return (
     <React.Fragment>
@@ -57,6 +68,7 @@ const ProjectsView = props => {
         <IconButton>
           <Search />
         </IconButton>
+
         <CustomInput
           formControlProps={{
             className: classes.margin + " " + classes.search
@@ -70,10 +82,15 @@ const ProjectsView = props => {
             onChange: handleSearchChange
           }}
         />
-        {user ? (<IconButton>
-          <AddIcon />
-        </IconButton>) : null}
+
+        {user ? (
+          <IconButton onClick={handleModalOpen}>
+            <AddIcon />
+          </IconButton>
+        ) : null}
       </div>
+
+      <ProjectModal open={openModal} onClose={handleModalClose} />
 
       {allProjects ? <Projects projects={filteredProjects} /> : null}
     </React.Fragment>
