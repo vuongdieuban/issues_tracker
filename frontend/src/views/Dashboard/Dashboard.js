@@ -50,7 +50,9 @@ export default function Dashboard(props) {
 
   React.useEffect(() => {
     const latestProjects = getLatestProjects();
-    setState({ ...state, latestProjects });
+    setState(prevState => {
+      return { ...prevState, latestProjects };
+    });
   }, [state.projects]);
 
   React.useEffect(() => {
@@ -60,7 +62,9 @@ export default function Dashboard(props) {
       issue => issue.status.name === "Open"
     ).length;
     const closedIssues = state.issues.length - openIssues;
-    setState({ ...state, latestIssues, openIssues, closedIssues });
+    setState(prevState => {
+      return { ...prevState, latestIssues, openIssues, closedIssues };
+    });
   }, [state.issues]);
 
   const getLatestProjects = () => {
@@ -147,13 +151,13 @@ export default function Dashboard(props) {
   };
 
   return (
-    <div>
+    <React.Fragment>
       {/* Display number of projects, bugs and features*/}
       <GridContainer>{renderStats()}</GridContainer>
 
       {/* Display all the projets*/}
       <span className={classes.latestText}>Latest Projects</span>
-      <Projects projects={state.projects} />
+      <Projects projects={state.latestProjects} />
 
       {/* Display Issues */}
       <span className={classes.latestText}>Latest Issues</span>
@@ -162,6 +166,6 @@ export default function Dashboard(props) {
         issues={state.latestIssues}
         onIssuesModified={handleIssuesModified}
       />
-    </div>
+    </React.Fragment>
   );
 }
