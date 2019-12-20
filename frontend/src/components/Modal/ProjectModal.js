@@ -1,23 +1,16 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import styles from "assets/jss/material-dashboard-react/components/modalStyle.js";
-
-const useStyles = makeStyles(styles);
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import ProjectForm from "components/Form/ProjectForm.js";
 
 const ProjectModal = props => {
-  const classes = useStyles();
-  const { open, onClose } = props;
+  const { open, onClose, onSave } = props;
   return (
-    <Modal
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
-      open={open}
-      onClose={onClose}
-      className={classes.modal}
-    >
-      <div className={classes.paper}>Put the Project Form here</div>
-    </Modal>
+    <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
+      <DialogContent>
+        <ProjectForm onSave={onSave} onClose={onClose} />
+      </DialogContent>
+    </Dialog>
   );
 };
 

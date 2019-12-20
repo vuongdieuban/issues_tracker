@@ -29,13 +29,15 @@ const ProjectsView = props => {
   };
 
   const handleModalOpen = () => {
-    console.log("open modal");
     setOpenModal(true);
   };
 
   const handleModalClose = () => {
-    console.log("close modal");
     setOpenModal(false);
+  };
+
+  const handleSave = () => {
+    console.log("save project");
   };
 
   // call on mount
@@ -90,7 +92,11 @@ const ProjectsView = props => {
         ) : null}
       </div>
 
-      <ProjectModal open={openModal} onClose={handleModalClose} />
+      <ProjectModal
+        open={openModal}
+        onClose={handleModalClose}
+        onSave={handleSave}
+      />
 
       {allProjects ? <Projects projects={filteredProjects} /> : null}
     </React.Fragment>

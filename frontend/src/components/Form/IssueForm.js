@@ -95,7 +95,7 @@ const IssueForm = props => {
     status: issue.status._id
   });
 
-  const handleSubmit = async event => {
+  const handleSubmit = event => {
     // check form validate
     event.preventDefault();
     setState({ ...state, validated: true }); // tell the form to start running its validity check
