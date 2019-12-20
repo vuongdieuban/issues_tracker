@@ -36,8 +36,13 @@ const ProjectsView = props => {
     setOpenModal(false);
   };
 
-  const handleSave = () => {
-    console.log("save project");
+  const handleSave = async project => {
+    const newProject = await projectService.save(project);
+    setState(prevState => {
+      prevState.allProjects.push(newProject);
+      return { ...prevState };
+    });
+    setOpenModal(false);
   };
 
   // call on mount
