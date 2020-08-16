@@ -33,7 +33,8 @@ export default function Admin(props) {
   const [user, setUser] = React.useState(null);
 
   const handleSigninSuccess = async res => {
-    const currentUser = await auth.signinUser(res.access_token);
+    console.log("RES", res)
+    const currentUser = await auth.signinUser(res.accessToken);
     setUser(currentUser);
   };
 
